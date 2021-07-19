@@ -1,0 +1,7 @@
+{
+  "name": "Stockfolio",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

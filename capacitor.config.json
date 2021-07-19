@@ -1,0 +1,6 @@
+{
+	"appId": "com.dSmart.Stockfolio",
+	"appName": "Stockfolio",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

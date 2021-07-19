@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>  
+    
+    <ion-buttons slot="start" (click)="Dismiss()">
+     <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>{{scriptName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>Quantity:</ion-label>
+      <ion-label>{{qty}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        Rate per unit: 
+      </ion-label>
+      <ion-label>
+        {{rate}}
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        Buyed: 
+      </ion-label>
+      <ion-label>
+        {{buyed}}
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        Sold: 
+      </ion-label>
+      <ion-label>
+        {{sold}}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
