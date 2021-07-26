@@ -1,0 +1,16 @@
+.date-label{
+    overflow-x: scroll;
+}
+ion-toggle{
+   height: 30px;
+   width: 60px;
+   --handle-spacing: 0px;
+  --handle-height: 100%;
+   --handle-width:30px;
+}
+.from-input{
+    padding-left: 20px;
+}
+.from-Label,.to-Label{
+     text-align: center;;
+}

@@ -37,24 +37,33 @@ export class PnlPage implements OnInit {
     this.Scripts=this.local.scriptlist;
     let dates=this.helper.SoldDates();
     if(dates.length>0){
+      dates=dates.reverse();
       dates.forEach(e => {
+        this.PnL={
+          date:"",
+          Transactions:[]
+        }
         let t=this.helper.getTransactionbyDate(e,this.local.SellList());
         if(t.length>0){
           t.forEach(ele => {
             
-            let buyprice=this.helper.getBuyAvgPrice(ele.scriptid,ele.date);
+          // let buyprice=this.helper.getBuyAvgPrice(ele.scriptid,ele.date);
+            let buyprice=this.helper.AverageCostbyTotalCost(ele.scriptid,ele.date);
             let pnlobj=this.helper.getProfitnLoss(ele.scriptid,buyprice,ele.price,ele.date);
             let scriptname=this.helper.getScriptNameFromList(ele.scriptid,this.Scripts);
             this.transaction={
               scriptsname:scriptname,
-              PnL:pnlobj.amount,
+              PnL:parseFloat(pnlobj.amount.toFixed(2)),
               buyprice:buyprice,
               sellprice:ele.price,
               state:pnlobj.pnlstate
             };
             this.PnL.Transactions.push(this.transaction);
+            
           });
+          this.PnL.Transactions=this.PnL.Transactions.reverse();
         }
+        
         this.PnL.date=new Date(e).toDateString();
         this.List.push(this.PnL);
       });

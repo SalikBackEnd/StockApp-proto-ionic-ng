@@ -40,6 +40,14 @@ const routes: Routes = [
     path: 'pnl',
     loadChildren: () => import('./pages/pnl/pnl.module').then( m => m.PnlPageModule)
   },
+  {
+    path: 'logs',
+    loadChildren: () => import('./pages/logs/logs.module').then( m => m.LogsPageModule)
+  },
+  {
+    path: 'scripts',
+    loadChildren: () => import('./pages/scripts/scripts.module').then( m => m.ScriptsPageModule)
+  },
 ];
 
 @NgModule({

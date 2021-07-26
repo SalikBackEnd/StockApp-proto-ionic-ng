@@ -7,16 +7,15 @@
 <ion-content>
   <div class="ion-padding">
     <ion-grid >
-      <ion-row>
-        <ion-col justify-content-center class="ion-padding">
-          <ion-item>
-            <ion-select [(ngModel)]="Trans.scriptid" (ionChange)="onScriptSelect($event.target.value)" required>
+     <ion-row>
+        <ion-col justify-content-center class="ion-padding" >
+           <!--   <ion-select [(ngModel)]="Trans.scriptid" (ionChange)="onScriptSelect($event.target.value)" required>
                 <ion-select-option value="" disabled >Select a Script</ion-select-option>
                   <ion-select-option *ngFor="let i of scripts" value="{{i.id}}">{{i.name}}</ion-select-option>
-            </ion-select>
-          </ion-item>
+            </ion-select> -->
+            <app-scriptcombobox [sid]="resetscriptid" (scriptvalue)="receiveScriptid($event)"></app-scriptcombobox>
         </ion-col>
-      </ion-row>
+      </ion-row>  
       <ion-row>
         <ion-col size="12" class="ion-padding">
           <ion-item>
@@ -41,16 +40,17 @@
           </ion-item>
         </ion-col>
       </ion-row>
+    
+      <ion-row>
+        <ion-col size="12">
+          <buy-calculation [page]="page" [tax]="Tax" [scriptid]="selectedScript" [sQuantity]="Quantity" [amount]="Amount" (eTax)="receiveTax($event)" (eCommission)="receiveComission($event)" (eTotalCost)="receiveCost($event)" ></buy-calculation>
+        </ion-col>
+      </ion-row>
       <ion-row class="ion-justify-content-center">
         <ion-col size="6" >
             <ion-button (click)="onSell(selectedScriptid)" expand="block" shape="round">
               Sell
             </ion-button>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="12">
-          <buy-calculation [page]="page" [tax]="Tax" [scriptid]="selectedScriptid" [sQuantity]="Quantity" [amount]="Amount"></buy-calculation>
         </ion-col>
       </ion-row>
     </ion-grid>

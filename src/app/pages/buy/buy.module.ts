@@ -8,6 +8,7 @@ import { BuyPageRoutingModule } from './buy-routing.module';
 
 import { BuyPage } from './buy.page';
 import { CalculationComponent } from 'src/app/components/calculation/calculation.component';
+import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scriptcombobox.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { CalculationComponent } from 'src/app/components/calculation/calculation
     BuyPageRoutingModule
     
   ],
-  declarations: [BuyPage,CalculationComponent]
+  declarations: [BuyPage,CalculationComponent,ScriptcomboboxComponent]
 })
 export class BuyPageModule {}

@@ -5,7 +5,9 @@ import { HelperService, Tables } from 'src/app/services/helper.service';
 
 import { LocalService } from 'src/app/services/local.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { LogsPage } from '../logs/logs.page';
 import { PnlPage } from '../pnl/pnl.page';
+import { ScriptsPage } from '../scripts/scripts.page';
 
 
 @Component({
@@ -53,15 +55,16 @@ export class InventoryPage implements OnInit {
       let sQuantity=this.helper.scriptsSellQuantity(el.id);
       let total=bQuantity-sQuantity;
       let avgcost=0;
-      if(total != 0)
-        avgcost=this.helper.AverageScriptCost(el.id);
-      this.Inventory={
-        script:{id:el.id,name:el.name},
-        count:total,
-        avgRate:avgcost
-      };
-
-      this.List.scripts.push(this.Inventory);
+      if(total != 0){
+        //avgcost=this.helper.AverageScriptCost(el.id);
+        avgcost=this.helper.AverageCostbyTotalCost(el.id);
+        this.Inventory = {
+          script: { id: el.id, name: el.name },
+          count: total,
+          avgRate: avgcost
+        };
+        this.List.scripts.push(this.Inventory);
+      }
     });
    
      this.Scriptitem=this.List.scripts;
@@ -91,9 +94,14 @@ export class InventoryPage implements OnInit {
    }
    async OpenPnL(){
     const modal=await this.modalcontroller.create({component:PnlPage});
-    modal.onDidDismiss().then(data=>{
-      console.log(data);
-     });
+    return await modal.present();
+   }
+   async OpenLogs(){
+    const modal=await this.modalcontroller.create({component:LogsPage});
+    return await modal.present();
+   }
+   async OpenScripts(){
+    const modal=await this.modalcontroller.create({component:ScriptsPage});
     return await modal.present();
    }
   //  doInfinite(event){

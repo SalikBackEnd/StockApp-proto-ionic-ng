@@ -18,6 +18,9 @@ export class SellPage implements OnInit {
     quantity: 0,
     price: 0,
     date: Date.now(),
+    tax:0,
+    comission:0,
+    totalcost:0,
     statusid: 0
   }
   textQty: string = '';
@@ -28,12 +31,17 @@ export class SellPage implements OnInit {
   public scripts: any = [];
   Tax: any = false;
 
-  public selectedScriptid: number;
+  public selectedScriptid: string="0";
+  public selectedScript:number;
   buyList: any = [];
   sellList: any = [];
   logarr: any = [];
+  tax: number=0;
+  comission: number=0;
+  totalcost: number=0;
+  resetscriptid:string="";
   constructor(public local: LocalService, public toast: ToastService, public helper: HelperService, public loadingController: LoadingController) {
-    this.addScriptstoSelect();
+    // this.addScriptstoSelect();
   }
 
   ngOnInit() {
@@ -43,15 +51,15 @@ export class SellPage implements OnInit {
 
   }
   ionViewWillEnter() {
-    this.addScriptstoSelect();
+    // this.addScriptstoSelect();
     this.local.countTotalShares();
   }
-  onScriptSelect(value) {
-    if (value != "") {
-      this.selectedScriptid = parseInt(value);
-      console.log(this.selectedScriptid)
-    }
-  }
+  // onScriptSelect(value) {
+  //   if (value != "") {
+  //     this.selectedScriptid = parseInt(value);
+  //     console.log(this.selectedScriptid)
+  //   }
+  // }
 
   addScriptstoSelect() {
     this.local.GetScripts().subscribe(res => {
@@ -136,8 +144,18 @@ export class SellPage implements OnInit {
         } else if (this.Trans.quantity <= totalQunatity) {
 
           this.Trans.statusid = TransactionType.Sell;
+          this.Trans.scriptid=this.selectedScriptid;
           this.Trans.id = this.local.GenerateId(key);
           this.Trans.date = Date.now();
+          if (this.Tax == false) {
+            this.Trans.tax = 0;
+            this.Trans.comission = 0;
+            this.Trans.totalcost = (this.totalcost - this.tax) - this.comission;
+          } else if (this.Tax == true) {
+            this.Trans.tax = this.tax;
+            this.Trans.comission = this.comission;
+            this.Trans.totalcost = this.totalcost;
+          }
           list.push(this.Trans);
           this.local.SetData(key, list);
 
@@ -151,26 +169,31 @@ export class SellPage implements OnInit {
         return false;
       }
     } else {
-      this.toast.show("Please fill all the fields!");
+     
       return false;
     }
   }
   isSellValid() {
     let valid = true;
-    if (this.Trans.scriptid == "") {
-      valid = false;
+    if (this.selectedScriptid == "" || this.selectedScriptid=="0") {
+      this.toast.show("Please select a script!");
+      return false;
     }
     if (this.Trans.quantity == 0) {
-      valid = false;
+      this.toast.show("Please enter quantity!");
+      return false;
     }
     if (this.Trans.price == 0) {
-      valid = false;
+      this.toast.show("Please enter price!");
+      return false;
     }
     if (this.Trans.price < 0) {
-      valid = false;
+      this.toast.show("Price is not valid.");
+      return false;
     }
     if (this.Trans.quantity < 0) {
-      valid = false;
+      this.toast.show("Quantity is not valid.");
+      return false;
     }
     return valid;
 
@@ -189,11 +212,15 @@ export class SellPage implements OnInit {
         quantity: 0,
         price: 0,
         date: Date.now(),
+        tax:0,
+        comission:0,
+        totalcost:0,
         statusid: 0
       };
       this.ResetFields();
       await loading.onDidDismiss().then(() => {
         this.toast.show("Transaction done successfully!");
+        this.resetscriptid=null;
       });
     } else {
       loading.dismiss();
@@ -211,5 +238,18 @@ export class SellPage implements OnInit {
     this.Amount = 0;
     this.Trans.quantity = 0;
     this.Trans.price = 0;
+  }
+  receiveTax(value:number){
+    this.tax=value;
+  }
+  receiveComission(value:number){
+    this.comission=value;
+  }
+  receiveCost(value:number){
+    this.totalcost=value;
+  }
+  receiveScriptid(value:string){
+    this.selectedScriptid=value;
+    this.selectedScript=parseInt(value);
   }
 }

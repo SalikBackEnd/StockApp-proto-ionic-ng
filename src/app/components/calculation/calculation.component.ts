@@ -25,9 +25,13 @@ export class CalculationComponent implements OnInit {
   @Input() sQuantity:number;
   @Input() amount:number;
   @Input() scriptid:number;
+  @Input() buttonclick:boolean;
   @Input() page:string;
   @Input() tax:boolean;
 
+  @Output() eTax=new EventEmitter<number>();
+  @Output() eCommission=new EventEmitter<number>();
+  @Output() eTotalCost=new EventEmitter<number>();
   // @Output() Amount=new EventEmitter<number>();
   public buyList:any=[];
   public sellList:any=[];
@@ -44,24 +48,25 @@ export class CalculationComponent implements OnInit {
           this.totalInvested();
           this.totalCostTnC(this.taxapply);
           // this.emitAmount(this.tInvest);
+          
           this.ifNoValue();
         }
         if(this.page=='sell'){
           this.totalInvested();
           this.totalCostTnC(this.taxapply);
           // this.emitAmount(this.tInvest);
+          
           this.ifNoValue();
         }
+      
     }
     if(changes['scriptid']){
       if(this.page=='sell'){
         this.Sharecount=this.countShareswrtScript(this.scriptid);
-      //  this.avgCost= this.AverageShareCost();
+      
       }
     }
-    // if(changes['taxapply']){
-    //   this.totalCostTnC(this.taxapply);
-    // }
+  
 }
 
   totalInvested(){
@@ -69,10 +74,13 @@ export class CalculationComponent implements OnInit {
     let Amount=this.amount;
     if(Quantity != undefined && Amount != undefined){
       let Invested=Quantity*Amount;
-      this.tInvest=Invested;
+      this.tInvest=parseFloat(Invested.toFixed(2));
     }else{
       this.tInvest=0;
     }
+    this.emitTax();
+    this.emitCost();
+    this.emitComission();
   }
   // totalCost(){
   //   let invested=this.tInvest;
@@ -154,6 +162,7 @@ export class CalculationComponent implements OnInit {
   onTaxChange(){
       if(this.taxapply>=0){
         this.totalCostTnC(this.taxapply);
+       
       }else if(this.taxapply<0){
         this.totalCostTnC(0);
         this.toast.show("Pleae enter a valid Tax amount.");
@@ -184,15 +193,30 @@ export class CalculationComponent implements OnInit {
         let taxcost=tax*quantity;
         this.tTax=taxcost;
         this.tCost=parseFloat((taxcost+tcost).toFixed(2));
+      
       }else{
         this.tTax=0;
         this.tCost=parseFloat(tcost.toFixed(3));
+        
       }
       this.Comission=parseFloat(tComission.toFixed(3));
     
     }else{
       this.tCost=0;
       this.Comission=0;
+   
     }
+    this.emitTax();
+    this.emitCost();
+    this.emitComission();
+  }
+  emitTax(){
+    this.eTax.emit(this.tTax);
+  }
+  emitComission(){
+    this.eCommission.emit(this.Comission);
+  }
+  emitCost(){
+    this.eTotalCost.emit(this.tCost);
   }
 }

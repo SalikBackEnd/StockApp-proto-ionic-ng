@@ -20,6 +20,9 @@ export class BuyPage implements OnInit {
     quantity: 0,
     price: 0,
     date: Date.now(),
+    tax:0,
+    comission:0,
+    totalcost:0,
     statusid: 0
   }
   textQty: string = '';
@@ -27,31 +30,33 @@ export class BuyPage implements OnInit {
   Tax: any = false;
   public logList: any = [];
   public logarr = [];
-  scripts: any = [];
+  public selectedscriptid:string="0";
   public Quantity: number = 0;
   public Amount: number = 0;
   public page = 'buy';
 
+  public totalcost=0;
+  public tax=0;
+  public comission=0;
 
-
-
+public resetscriptid:string="";
   constructor(public local: LocalService, public toast: ToastService, public loadingController: LoadingController) {
-    this.addScriptstoSelect();
+    // this.addScriptstoSelect();
 
   }
 
   ngOnInit() {
   }
-  addScriptstoSelect() {
-    this.local.GetScripts().subscribe(res => {
+  // addScriptstoSelect() {
+  //   this.local.GetScripts().subscribe(res => {
 
-      this.scripts = res;
-    }, err => {
-      console.log(err)
-    });
-    console.log("Buy page")
-    console.log(this.scripts)
-  }
+  //     this.scripts = res;
+  //   }, err => {
+  //     console.log(err)
+  //   });
+  //   console.log("Buy page")
+  //   console.log(this.scripts)
+  // }
 
   async onBuy() {
     const loading = await this.loadingController.create({
@@ -67,17 +72,21 @@ export class BuyPage implements OnInit {
         quantity: 0,
         price: 0,
         date: Date.now(),
+        tax:0,
+        comission:0,
+        totalcost:0,
         statusid: 0
       }
       this.ResetFields();
       loading.onDidDismiss().then(() => {
         this.toast.show("Transaction done successfully!");
+        this.resetscriptid=null;
       });
 
     }
     else {
       loading.dismiss();
-      this.toast.show("Please fill all the fields.");
+      
     }
   }
 
@@ -88,17 +97,38 @@ export class BuyPage implements OnInit {
       if (this.logList != undefined) {
 
         this.Trans.id = this.local.GenerateId(key);
+        this.Trans.scriptid=this.selectedscriptid;
         this.Trans.statusid = TransactionType.Buy;
         this.Trans.date = Date.now();
+        if (this.Tax == false) {
+          this.Trans.tax = 0;
+          this.Trans.comission = 0;
+          this.Trans.totalcost = (this.totalcost - this.tax) - this.comission;
+        } else if (this.Tax == true) {
+          this.Trans.tax = this.tax;
+          this.Trans.comission = this.comission;
+          this.Trans.totalcost = this.totalcost;
+        }
         this.logList.push(this.Trans);
         this.local.SetData(key, this.logList);
         return true;
       } else {
         this.Trans.id = this.local.GenerateId(key);
+        this.Trans.scriptid=this.selectedscriptid;
         this.Trans.statusid = TransactionType.Buy;
         this.Trans.date = Date.now();
+        if (this.Tax == false) {
+          this.Trans.tax = 0;
+          this.Trans.comission = 0;
+          this.Trans.totalcost = (this.totalcost - this.tax) - this.comission;
+        } else if (this.Tax == true) {
+          this.Trans.tax = this.tax;
+          this.Trans.comission = this.comission;
+          this.Trans.totalcost = this.totalcost;
+        }
         let arr: any = [];
         arr.push(this.Trans);
+        
         this.local.SetData(key, arr);
         return true;
       }
@@ -109,20 +139,25 @@ export class BuyPage implements OnInit {
   }
   isBuyValid() {
     let valid = true;
-    if (this.Trans.scriptid == "") {
-      valid = false;
+    if (this.selectedscriptid == "" || this.selectedscriptid=="0") {
+      this.toast.show("Please select a script!");
+      return false;
     }
     if (this.Trans.quantity == 0) {
-      valid = false;
+      this.toast.show("Please enter quantity!");
+      return false;
     }
     if (this.Trans.price == 0) {
-      valid = false;
+      this.toast.show("Please enter price!");
+      return false;
     }
     if (this.Trans.price < 0) {
-      valid = false;
+      this.toast.show("Price is not valid.");
+      return false;
     }
     if (this.Trans.quantity < 0) {
-      valid = false;
+      this.toast.show("Quantity is not valid.");
+      return false;
     }
     return valid;
   }
@@ -161,5 +196,17 @@ export class BuyPage implements OnInit {
     this.Trans.quantity = 0;
     this.Trans.price = 0;
   }
-
+  receiveTax(value:number){
+    this.tax=value;
+  }
+  receiveComission(value:number){
+    this.comission=value;
+  }
+  receiveCost(value:number){
+    this.totalcost=value;
+  }
+  receiveScriptid(value:string){
+    this.selectedscriptid=value;
+    
+  }
 }

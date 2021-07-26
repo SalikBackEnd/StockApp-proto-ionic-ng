@@ -1,0 +1,8 @@
+
+      <ion-item>
+        <ion-select #scriptSelect  (ionChange)="onScriptSelect($event.target.value)" placeholder="Select a Scripts"
+          required>
+          <!-- <ion-select-option value="0" disabled selected>Select a Script</ion-select-option> -->
+          <ion-select-option *ngFor="let i of scripts" value="{{i.id}}">{{i.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>

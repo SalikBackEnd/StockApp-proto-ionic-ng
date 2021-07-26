@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" (click)="Dismiss()">
+      <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+     </ion-buttons>
+    <ion-title>Transaction Log</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+ 
+
+<ion-content >
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="6">
+        <app-scriptcombobox (scriptvalue)="receiveScriptid($event)"></app-scriptcombobox>
+      </ion-col>
+      <ion-col size="6">
+       <ion-item>
+        Buy
+        <ion-toggle color="light" [(ngModel)]="togglevalue" (ionChange)="onToggle()"></ion-toggle>
+        Sell
+       </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+    
+    <!-- <ion-searchbar [(ngModel)]="scriptFilter"></ion-searchbar> -->
+   
+   
+    
+ 
+  <ion-item>
+    <ion-label class="from-Label">From</ion-label>
+    <ion-datetime [(ngModel)]="fromDate" (ionChange)="onFromDate()" displayFormat="MMM DD YYYY"
+      placeholder="Select Date" min="2020-01-01" [max]="maxDate"></ion-datetime>
+    <ion-label class="to-Label">To</ion-label>
+    <ion-datetime [(ngModel)]="toDate" (ionChange)="onToDate()" displayFormat="MMM DD YYYY" placeholder="Select Date"
+      [min]="minDate" [max]="maxDate"></ion-datetime>
+  </ion-item>
+  
+  <ion-item>
+    <ion-label>
+      <ion-text color="primary"><b>Scripts</b></ion-text>
+    </ion-label>
+    <ion-label>
+      <ion-text color="primary"><b>Price</b></ion-text>
+    </ion-label>
+    <ion-label>
+      <ion-text color="primary"><b>Qty</b></ion-text>
+    </ion-label>
+    <ion-label>
+      <ion-text color="primary"><b>Date</b></ion-text>
+    </ion-label>
+  </ion-item>
+
+  <ion-list>
+    <ion-item *ngFor="let log of loglist | filter:scriptFilter">
+      <ion-label>{{log.script}}</ion-label>
+      <ion-label>{{log.price}}</ion-label>
+      <ion-label>{{log.qty}}</ion-label>
+      <ion-badge color="primary">{{log.date}}</ion-badge>
+    </ion-item>
+  </ion-list>
+</ion-content>

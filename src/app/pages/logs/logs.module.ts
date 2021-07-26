@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SellPageRoutingModule } from './sell-routing.module';
+import { LogsPageRoutingModule } from './logs-routing.module';
 
-import { SellPage } from './sell.page';
-import { CalculationComponent } from 'src/app/components/calculation/calculation.component';
+import { LogsPage } from './logs.page';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scriptcombobox.component';
 
 @NgModule({
@@ -15,8 +15,9 @@ import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scrip
     CommonModule,
     FormsModule,
     IonicModule,
-    SellPageRoutingModule
+    LogsPageRoutingModule,
+    Ng2SearchPipeModule
   ],
-  declarations: [SellPage,CalculationComponent,ScriptcomboboxComponent]
+  declarations: [LogsPage,ScriptcomboboxComponent]
 })
-export class SellPageModule {}
+export class LogsPageModule {}
