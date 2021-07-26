@@ -15,13 +15,16 @@ export class LocalService {
   public buyList: any = [];
   public sellList: any = [];
   public scriptlist: any = [];
-  
+  public objfavscripts:any={
+    id:"",name:"",fav:false
+    };
   constructor(public http: HttpClient) { 
     this.GetScriptsList();
+    
     console.log(this.scriptlist)
   }
 
-
+  
   GetScripts(): Observable<object> {
     return this.http.get('assets/data/scripts.json');
   }
@@ -170,5 +173,24 @@ export class LocalService {
     }
     else
     return [];
+  }
+  PopulateFavScript(){
+    let favScripts:any=[];
+    favScripts= this.GetData(Tables.FavScripts);
+    if(favScripts!=undefined && favScripts.length>0){
+      
+    }else{
+      let favarr:any=[];
+      this.scriptlist.forEach(element => {
+        this.objfavscripts={
+          id:element.id,
+          name:element.name,
+          fav:false
+        }
+        favarr.push(this.objfavscripts);
+       });
+       this.SetData(Tables.FavScripts,favarr);
+    }
+    
   }
 }

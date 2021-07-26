@@ -8,6 +8,7 @@ export enum TransactionType {
 //new table of key will be added here
 export enum Tables {
   Transaction = "trnsctlog",
+  FavScripts="favScripts",
 }
 export enum PnL {
   Profit = 1,
