@@ -169,6 +169,22 @@ export class HelperService {
     else
       return [];
   }
+  SoldDatesByScript(id) {
+    let sell = this.local.scriptsSellList(id);
+    if(sell.length>0){
+      let date = sell.map(e => e.date);
+      let datestring = sell.map(e => new Date(e.date).toDateString());
+      date = datestring.filter(this.onlyUnique);
+      console.log("In Sold Dates Method");
+      console.log(datestring)
+      if (date.length > 0)
+        return date;
+      else
+        return [];
+    }
+    else
+      return [];
+  }
   onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
   }

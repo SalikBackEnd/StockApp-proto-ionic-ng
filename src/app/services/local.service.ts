@@ -163,9 +163,9 @@ export class LocalService {
   }
   scriptsSellList(scriptid){
     let list:any;
-    list=this.GetData(Tables.Transaction);
+    list=this.SellList();
     if(list != undefined){
-    let filtered= list.filter(e=>(e.id!=""||e.id!=0)&&(e.statusid==TransactionType.Sell)&&e.scriptid==scriptid);
+    let filtered= list.filter(e=>e.scriptid==scriptid);
     if(filtered.length>0){
       return filtered;
     }else{
