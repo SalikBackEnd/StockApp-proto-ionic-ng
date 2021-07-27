@@ -198,11 +198,16 @@ export class CalculationComponent implements OnInit {
         
         let taxcost=tax*quantity;
         this.tTax=taxcost;
+        if(this.page=="buy")
         this.tCost=parseFloat((taxcost+tcost).toFixed(2));
-      
+        if(this.page=="sell")
+        this.tCost=parseFloat(((tcost-taxcost)-(tComission*2)).toFixed(2));
       }else{
         this.tTax=0;
+        if(this.page=="buy")
         this.tCost=parseFloat(tcost.toFixed(3));
+        if(this.page=="sell")
+        this.tCost=parseFloat((tcost-(tComission*2)).toFixed(3));
         
       }
       this.Comission=parseFloat(tComission.toFixed(3));

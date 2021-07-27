@@ -49,13 +49,15 @@ export class PnlPage implements OnInit {
             
           // let buyprice=this.helper.getBuyAvgPrice(ele.scriptid,ele.date);
             let buyprice=this.helper.AverageCostbyTotalCost(ele.scriptid,ele.date);
-            let pnlobj=this.helper.getProfitnLoss(ele.scriptid,buyprice,ele.price,ele.date);
+            
             let scriptname=this.helper.getScriptNameFromList(ele.scriptid,this.Scripts);
+            let sellprice=this.helper.ActualSellCostbyTotalCost(ele.quantity,ele.totalcost);
+            let pnlobj=this.helper.getProfitnLoss(ele.scriptid,buyprice,sellprice,ele.date);
             this.transaction={
               scriptsname:scriptname,
               PnL:parseFloat(pnlobj.amount.toFixed(2)),
               buyprice:buyprice,
-              sellprice:ele.price,
+              sellprice:sellprice,
               state:pnlobj.pnlstate
             };
             this.PnL.Transactions.push(this.transaction);

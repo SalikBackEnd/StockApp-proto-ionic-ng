@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { LocalService } from './local.service';
 
 export enum TransactionType {
@@ -51,11 +52,14 @@ export class HelperService {
     else
       return 0;
   }
-  scriptsSellQuantity(sid) {
-    let list: any = [];
-    list = this.local.GetData(Tables.Transaction);
+  scriptsSellQuantity(sid,list: any = []) {
+    let filtered: any = [];
+    if(list.length==0)
+    list= this.local.scriptsSellList(sid);
+   // list = this.local.GetData(Tables.Transaction);
     if (list != undefined) {
-      let filtered = list.filter(e => (e.id != "") && (e.statusid == TransactionType.Sell) && (e.scriptid == sid));
+      //let filtered = list.filter(e => (e.id != "") && (e.statusid == TransactionType.Sell) && (e.scriptid == sid));
+      filtered=list;
       if (filtered.length > 0) {
         let quantity = filtered.map(e => e.quantity).reduce((a, b) => a + (b || 0), 0);
         return quantity;
@@ -144,7 +148,11 @@ export class HelperService {
     buycount = this.scriptsBuyQuantity(scriptid);
     return (buycount);
   }
-  
+  scriptTotalSellQuantity(scriptid) {
+    let buycount = 0;
+    buycount = this.scriptsSellQuantity(scriptid);
+    return (buycount);
+  }
 
   AverageScriptCost(scriptid) {
     return this.AverageShareCost(this.scriptTotalBuyQuantity(scriptid), this.scriptTotalBuyAmount(scriptid));
@@ -196,8 +204,22 @@ export class HelperService {
     else {
       return [];
     }
-
-
+  }
+  scriptSellListBeforeSell(scriptid, selldate) {
+    let sellList = this.local.scriptsSellList(scriptid);
+    let beforetransaction = sellList.filter(el => {
+      let dt = el.date;
+      if (selldate > dt)
+        return true;
+      else
+        return false;
+    });
+    if (beforetransaction.length > 0) {
+      return beforetransaction;
+    }
+    else {
+      return [];
+    }
   }
   getTotalPrices(list) {
     if (list.length > 0) {
@@ -346,6 +368,11 @@ export class HelperService {
     buycount = this.scriptsBuyQuantity(scriptid,this.scriptBuyListBeforeSell(scriptid,Date));
     return (buycount);
   }
+  scriptTotalSellQuantityBeforeDate(scriptid,Date) {
+    let sellcount = 0;
+    sellcount = this.scriptsSellQuantity(scriptid,this.scriptSellListBeforeSell(scriptid,Date));
+    return (sellcount);
+  }
   scriptTotalBuyAmountBeforeDate(id,Date,totalcost=false) {
     let buylist: any = [];
    
@@ -378,6 +405,38 @@ export class HelperService {
     let tAmount = bAmount ;
     return tAmount;
   }
+  scriptTotalSellAmountBeforeDate(id,Date,totalcost=false) {
+    let selllist: any = [];
+   
+    let sAList: any = [];
+    
+    let sAmount = 0;
+ 
+    selllist = this.scriptSellListBeforeSell(id,Date);
+   if(totalcost==false){
+    if (selllist.length > 0) {
+      selllist.forEach(e => {
+        let amount = e.price * e.quantity;
+        sAList.push(amount);
+      });
+      if (sAList.length > 0) {
+        sAmount = sAList.reduce((a, b) => a + (b || 0), 0);
+      }
+    }
+  }else if(totalcost ==true){
+    if (selllist.length > 0) {
+      selllist.forEach(e => {
+        let amount = e.totalcost;
+        sAList.push(amount);
+      });
+      if (sAList.length > 0) {
+        sAmount = sAList.reduce((a, b) => a + (b || 0), 0);
+      }
+    }
+  }
+    let tAmount = sAmount ;
+    return tAmount;
+  }
   AverageCostBeforeDate(scriptid,Date) {
     return this.AverageShareCost(this.scriptTotalBuyQuantityBeforeDate(scriptid,Date), this.scriptTotalBuyAmountBeforeDate(scriptid,Date));
   }
@@ -385,9 +444,7 @@ export class HelperService {
     let buylist: any = [];
     let bAList: any = [];
     let bAmount = 0;
- 
     buylist = this.local.scriptsBuyList(id);
-   
     if (buylist.length > 0) {
       buylist.forEach(e => {
         let amount = e.totalcost;
@@ -397,8 +454,24 @@ export class HelperService {
         bAmount = bAList.reduce((a, b) => a + (b || 0), 0);
       }
     }
-   
     let tAmount = bAmount ;
+    return tAmount;
+  }
+  scriptTotalSellCost(id) {
+    let selllist: any = [];
+    let sAList: any = [];
+    let sAmount = 0;
+    selllist = this.local.scriptsSellList(id);
+    if (selllist.length > 0) {
+      selllist.forEach(e => {
+        let amount = e.totalcost;
+        sAList.push(amount);
+      });
+      if (sAList.length > 0) {
+        sAmount = sAList.reduce((a, b) => a + (b || 0), 0);
+      }
+    }
+    let tAmount = sAmount ;
     return tAmount;
   }
   AverageCostbyTotalCost(scriptid,Date=null) {
@@ -406,6 +479,12 @@ export class HelperService {
     return this.AverageShareCost(this.scriptTotalBuyQuantity(scriptid), this.scriptTotalBuyCost(scriptid));
     if(Date!=null)
     return this.AverageShareCost(this.scriptTotalBuyQuantityBeforeDate(scriptid,Date), this.scriptTotalBuyAmountBeforeDate(scriptid,Date,true));
+  }
+  // Sell avg. cost Method
+   ActualSellCostbyTotalCost(quantity:number,actualamount:number) {
+    let avgsellprice=actualamount/quantity;
+    avgsellprice=parseFloat(avgsellprice.toFixed(2));
+    return avgsellprice;
   }
   SortHelper(Array,sortDataType){
     if(sortDataType=="boolean"){
