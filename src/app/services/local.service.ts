@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Tables, TransactionType } from './helper.service';
+import { DataTypes, HelperService, Tables, TransactionType } from './helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +15,14 @@ export class LocalService {
   public buyList: any = [];
   public sellList: any = [];
   public scriptlist: any = [];
+  
   public objfavscripts:any={
     id:"",name:"",fav:false
     };
   constructor(public http: HttpClient) { 
     this.GetScriptsList();
+   
     
-    console.log(this.scriptlist)
   }
 
   
@@ -178,7 +179,7 @@ export class LocalService {
     let favScripts:any=[];
     favScripts= this.GetData(Tables.FavScripts);
     if(favScripts!=undefined && favScripts.length>0){
-      
+     
     }else{
       let favarr:any=[];
       this.scriptlist.forEach(element => {
@@ -193,4 +194,5 @@ export class LocalService {
     }
     
   }
+  
 }

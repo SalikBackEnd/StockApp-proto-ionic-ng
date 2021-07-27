@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { LoadingController, ModalController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonInfiniteScroll, IonItemSliding, LoadingController, ModalController } from '@ionic/angular';
 
 import { DataTypes, HelperService, Tables } from 'src/app/services/helper.service';
 import { LocalService } from 'src/app/services/local.service';
@@ -16,9 +16,11 @@ export class ScriptsPage implements OnInit {
   public objfavscripts:any={
     id:"",name:"",fav:false
     };
+    @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+    @ViewChild(IonItemSliding) ionitemSliding:IonItemSliding;
   constructor(public local:LocalService,public helper:HelperService,public toast:ToastService,public loadingController:LoadingController,public viewCtrl:ModalController) 
   {
-    this.local.PopulateFavScript();
+    
     this.GetFavScripts();
 
   }
@@ -36,23 +38,40 @@ export class ScriptsPage implements OnInit {
     }
   }
   addFavScripts(id){
-    let favScripts:any=[];
+    this.ionitemSliding.closeOpened().then(()=>{
+      let favScripts:any=[];
     this.scripts.find(x=>x.id==id).fav=true;
-    
     console.log(this.scripts);
     this.local.SetData(Tables.FavScripts,this.scripts);
-    this.toast.show("Added to Favorite.");
     this.scripts=this.helper.SortHelper(this.scripts,DataTypes.Boolean);
+    });
+    
+    
   }
   removeFavScripts(id){
+    this.ionitemSliding.closeOpened().then(()=>{
     let favScripts:any=[];
     this.scripts.find(x=>x.id==id).fav=false;
     console.log(this.scripts);
     this.local.SetData(Tables.FavScripts,this.scripts);
-    this.toast.show("Removed from Favorite.");
     this.scripts=this.helper.SortHelper(this.scripts,DataTypes.Boolean);
+    });
+    
+    
   }
   Dismiss(){
     this.viewCtrl.dismiss({somedata:'Dismissed'});
+  }
+  loadData(event) {
+    setTimeout(() => {
+      console.log('Done');
+      event.target.complete();
+
+      // App logic to determine if all data is loaded
+      // and disable the infinite scroll
+      if (this.scripts.length == 1000) {
+        event.target.disabled = true;
+      }
+    }, 500);
   }
 }

@@ -1,7 +1,8 @@
 
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
-import { Tables, TransactionType } from 'src/app/services/helper.service';
+import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scriptcombobox.component';
+import { HelperService, Tables, TransactionType } from 'src/app/services/helper.service';
 
 import { LocalService } from 'src/app/services/local.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -40,12 +41,20 @@ export class BuyPage implements OnInit {
   public comission=0;
 
 public resetscriptid:string="";
-  constructor(public local: LocalService, public toast: ToastService, public loadingController: LoadingController) {
+@ViewChild(ScriptcomboboxComponent) Scriptcombox:ScriptcomboboxComponent;
+  constructor(public local: LocalService,public helper:HelperService, public toast: ToastService, public loadingController: LoadingController) {
     // this.addScriptstoSelect();
-
+    this.local.PopulateFavScript();
   }
-
+  
   ngOnInit() {
+  }
+  ionViewWillEnter(){
+   
+  }
+  ionViewDidEnter(){
+    this.helper.GetFavScripts();
+    this.Scriptcombox.refreshList();
   }
   // addScriptstoSelect() {
   //   this.local.GetScripts().subscribe(res => {

@@ -1,5 +1,6 @@
 import { Component, OnInit,  Output,EventEmitter, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { IonSelect } from '@ionic/angular';
+import { HelperService } from 'src/app/services/helper.service';
 import { LocalService } from 'src/app/services/local.service';
 
 @Component({
@@ -18,26 +19,28 @@ export class ScriptcomboboxComponent implements OnInit {
   @ViewChild('scriptSelect', { static: false }) scriptSelect: IonSelect;
 
 
-  constructor(public local:LocalService) {
-    this.scripts=local.scriptlist;
-   }
-ngOnChanges(changes: SimpleChanges){
-  if (changes['sid'] ) {
-    if(this.sid==null)
-    this.resetCombobox();
+  constructor(private local: LocalService, private helper: HelperService) {
+    this.scripts = helper.favScriptList;
   }
-}
-  ngOnInit() {}
-  onScriptSelect(value){
-    this.scriptid=value;
+   ngOnChanges(changes: SimpleChanges) {
+    if (changes['sid']) {
+      if (this.sid == null)
+        this.resetCombobox();
+    }
+  }
+  ngOnInit() { }
+   onScriptSelect(value) {
+    this.scriptid = value;
     this.emitScriptId(value);
   }
-  emitScriptId(val){
+  private emitScriptId(val) {
     this.scriptvalue.emit(val)
   }
-  resetCombobox(){
-   
+  private resetCombobox() {
+
     this.scriptSelect.value = "";
   }
-  
+  refreshList() {
+    this.scripts = this.helper.favScriptList;
+  }
 }

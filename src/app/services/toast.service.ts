@@ -8,10 +8,10 @@ export class ToastService {
 
   constructor(public toast:ToastController) { }
 
-  show(msg){
+  show(msg,duration=2000){
     let t=this.toast.create({
       message:msg,
-      duration:2000
+      duration:duration
     }).then((toastData)=>{
       toastData.present();
     });

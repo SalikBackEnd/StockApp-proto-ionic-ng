@@ -175,18 +175,24 @@ export class CalculationComponent implements OnInit {
   totalCostTnC(tax){
     let invested=this.tInvest;
     let quantity=this.sQuantity;
-    let cperRupee=0;
+    let cperShare=0;
+    let cps_paisa=0;
+    let cps_percent=0;
     let percent=0.15;
-    if(this.amount<5){
-      cperRupee=0.03;
-    }else{
-      cperRupee=(percent/100)*this.amount;
-      
-    }
-   
-    let perRupeecost=cperRupee+1;
+    // if(this.amount<5){
+    //   cperShare=0.03+this.amount;
+    // }else{
+    //   cperShare=((percent/100)*this.amount)+this.amount;
+    //   if(cperShare<(0.03+this.amount))cperShare=0.03+this.amount;
+    // }
+    cps_paisa=0.03+this.amount;
+    cps_percent=((percent/100)*this.amount)+this.amount;
+    if(cps_paisa>cps_percent)cperShare=cps_paisa;
+    if(cps_percent>=cps_paisa)cperShare=cps_percent;
+  
+    let totalSharecost=cperShare*quantity;
     if(invested != 0 && invested != undefined){
-      let tcost=perRupeecost*invested;
+      let tcost=totalSharecost;
       let tComission=tcost-invested;
       if(tax>0 && tax != undefined){
         
