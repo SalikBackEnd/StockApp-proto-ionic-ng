@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController } from '@ionic/angular';
 
-import { HelperService, Tables } from 'src/app/services/helper.service';
+import { DataTypes, HelperService, Tables } from 'src/app/services/helper.service';
 import { LocalService } from 'src/app/services/local.service';
 import { ToastService } from 'src/app/services/toast.service';
 
@@ -28,15 +28,30 @@ export class ScriptsPage implements OnInit {
     let favScripts:any=[];
     favScripts= this.local.GetData(Tables.FavScripts);
     if(favScripts!=undefined && favScripts.length>0){
-      this.scripts=favScripts;
+     
+      this.scripts=this.helper.SortHelper(favScripts,DataTypes.Boolean); //return a sorted list of array with true values first
+      
     }else{
       this.scripts= [];
     }
   }
- SetFavScripts(){
-   
- }
- 
+  addFavScripts(id){
+    let favScripts:any=[];
+    this.scripts.find(x=>x.id==id).fav=true;
+    
+    console.log(this.scripts);
+    this.local.SetData(Tables.FavScripts,this.scripts);
+    this.toast.show("Added to Favorite.");
+    this.scripts=this.helper.SortHelper(this.scripts,DataTypes.Boolean);
+  }
+  removeFavScripts(id){
+    let favScripts:any=[];
+    this.scripts.find(x=>x.id==id).fav=false;
+    console.log(this.scripts);
+    this.local.SetData(Tables.FavScripts,this.scripts);
+    this.toast.show("Removed from Favorite.");
+    this.scripts=this.helper.SortHelper(this.scripts,DataTypes.Boolean);
+  }
   Dismiss(){
     this.viewCtrl.dismiss({somedata:'Dismissed'});
   }

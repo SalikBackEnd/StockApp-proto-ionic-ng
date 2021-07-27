@@ -14,15 +14,16 @@
         <ion-item>
           <ion-card-header>
             <ion-card-title>{{s.name}}</ion-card-title>
-            <ion-card-subtitle>script</ion-card-subtitle>
+            <ion-card-subtitle>Slide right to add or remove from favorites.</ion-card-subtitle>
           </ion-card-header>
+          <ion-card-content><ion-icon slot="icon-only" name="star"></ion-icon></ion-card-content>
         </ion-item>
-        <ion-item-options *ngIf="s.fav == false" side="start">
-          <ion-item-option>
+        <ion-item-options *ngIf="s.fav == false" side="start" (ionSwipe)="addFavScripts(s.id)">
+          <ion-item-option >
             <ion-icon slot="icon-only" color="secondary" name="heart" ></ion-icon>
           </ion-item-option>
         </ion-item-options>
-        <ion-item-options *ngIf="s.fav == true" side="start">
+        <ion-item-options *ngIf="s.fav == true" side="start" (ionSwipe)="removeFavScripts(s.id)">
           <ion-item-option color="danger">
             <ion-icon slot="icon-only" color="warning" name="heart-dislike-outline"></ion-icon>
           </ion-item-option>

@@ -14,6 +14,13 @@ export enum PnL {
   Profit = 1,
   Loss = 2
 }
+export enum DataTypes{
+  Number="number",
+  String="string",
+  Boolean="boolean",
+  Object="object",
+  Array="array"
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -397,5 +404,17 @@ export class HelperService {
     return this.AverageShareCost(this.scriptTotalBuyQuantity(scriptid), this.scriptTotalBuyCost(scriptid));
     if(Date!=null)
     return this.AverageShareCost(this.scriptTotalBuyQuantityBeforeDate(scriptid,Date), this.scriptTotalBuyAmountBeforeDate(scriptid,Date,true));
+  }
+  SortHelper(Array,sortDataType){
+    if(sortDataType=="boolean"){
+     let arr:any=[];
+     arr=Array.sort(function(x, y) {
+        // true values first
+        return (x.fav === y.fav)? 0 : x.fav? -1 : 1;
+        // false values first
+        // return (x === y)? 0 : x? 1 : -1;
+    });
+    return arr;
+    }
   }
 }
