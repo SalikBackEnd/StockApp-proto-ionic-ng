@@ -48,6 +48,10 @@ const routes: Routes = [
     path: 'scripts',
     loadChildren: () => import('./pages/scripts/scripts.module').then( m => m.ScriptsPageModule)
   },
+  {
+    path: 'democalculation',
+    loadChildren: () => import('./pages/democalculation/democalculation.module').then( m => m.DemocalculationPageModule)
+  },
 ];
 
 @NgModule({
