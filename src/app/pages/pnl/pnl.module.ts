@@ -9,6 +9,7 @@ import { PnlPageRoutingModule } from './pnl-routing.module';
 import { PnlPage } from './pnl.page';
 import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scriptcombobox.component';
 
+
 @NgModule({
   imports: [
     CommonModule,

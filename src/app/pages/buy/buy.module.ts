@@ -10,13 +10,14 @@ import { BuyPage } from './buy.page';
 import { CalculationComponent } from 'src/app/components/calculation/calculation.component';
 import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scriptcombobox.component';
 
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     BuyPageRoutingModule
-    
   ],
   declarations: [BuyPage,CalculationComponent,ScriptcomboboxComponent]
 })

@@ -9,12 +9,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { LocalService } from './services/local.service';
 import { PnlPageModule } from './pages/pnl/pnl.module';
+// import { ScriptcomboboxComponent } from './components/scriptcombobox/scriptcombobox.component';
 
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [HttpClientModule,BrowserModule, IonicModule.forRoot(), AppRoutingModule,ViewscriptPageModule,PnlPageModule],
+  imports: [HttpClientModule,BrowserModule, IonicModule.forRoot(), AppRoutingModule,ViewscriptPageModule],
   providers: [HttpClientModule,LocalService,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
