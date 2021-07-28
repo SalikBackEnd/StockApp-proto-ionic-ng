@@ -50,3 +50,43 @@
     </ion-item>
   </ion-list>
 </div>
+<div *ngIf="page == 'demo-buy'">
+  <ion-list>
+    <ion-item>
+      <ion-label>Total Shares:</ion-label>
+      <ion-label>{{Sharecount}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>New Shares Qty:</ion-label>
+      <ion-label>{{NewQty}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Current Average:</ion-label>
+      <ion-label>{{CurrentAvg}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>New Average:</ion-label>
+      <ion-label>{{NewAvg}}</ion-label>
+    </ion-item>
+    <ion-item *ngIf="tax == false">
+      <ion-label>Total Investment:</ion-label>
+      <ion-label>{{tInvest}}</ion-label>
+    </ion-item>
+    <ion-item  *ngIf="tax == true">
+      <ion-label>Tax(Pkr):</ion-label>
+      <ion-input type="number" [(ngModel)]="taxapply" (ngModelChange)="onTaxChange()" placeholder="Enter Tax..." ></ion-input>
+    </ion-item>
+    <ion-item *ngIf="tax == true">
+      <ion-label>Comission:</ion-label>
+      <ion-label>{{Comission}}</ion-label>
+    </ion-item>
+    <ion-item *ngIf="tax == true">
+      <ion-label>Tax:</ion-label>
+      <ion-label>{{tTax}}</ion-label>
+    </ion-item>
+    <ion-item *ngIf="tax == true">
+      <ion-label>Total Investment:</ion-label>
+      <ion-label>{{tCost}}</ion-label>
+    </ion-item>
+  </ion-list>
+</div>

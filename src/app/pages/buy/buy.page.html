@@ -9,13 +9,7 @@
     <ion-grid >
       <ion-row>
         <ion-col justify-content-center class="ion-padding">
-         
-            <!-- <ion-select [(ngModel)]="Trans.scriptid"  required>
-                      <ion-select-option value="" disabled selected >Select a Script</ion-select-option>
-                        <ion-select-option *ngFor="let i of scripts" value="{{i.id}}">{{i.name}}</ion-select-option>
-                  </ion-select> -->
             <app-scriptcombobox [sid]="resetscriptid" (scriptvalue)="receiveScriptid($event)"></app-scriptcombobox>
-         
         </ion-col>
       </ion-row>
       <ion-row>
@@ -59,4 +53,7 @@
       </ion-row>
     </ion-grid>
   </div>
+  <ion-fab  vertical="bottom" horizontal="end" slot="fixed" >
+    <ion-fab-button (click)="OpenDemoBuy()" background="tertiary" ><ion-icon color="light" name="calculator-outline"></ion-icon></ion-fab-button>
+  </ion-fab>
 </ion-content>

@@ -1,12 +1,13 @@
 
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scriptcombobox.component';
 import { HelperService, Tables, TransactionType } from 'src/app/services/helper.service';
 
 import { LocalService } from 'src/app/services/local.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { environment } from 'src/environments/environment';
+import { DemocalculationPage } from '../democalculation/democalculation.page';
 
 @Component({
   selector: 'app-buy',
@@ -42,7 +43,7 @@ export class BuyPage implements OnInit {
 
 public resetscriptid:string="";
 @ViewChild(ScriptcomboboxComponent) Scriptcombox:ScriptcomboboxComponent;
-  constructor(public local: LocalService,public helper:HelperService, public toast: ToastService, public loadingController: LoadingController) {
+  constructor(public local: LocalService,public helper:HelperService, public toast: ToastService, public loadingController: LoadingController,public modalController:ModalController) {
     // this.addScriptstoSelect();
     this.local.PopulateFavScript();
   }
@@ -216,6 +217,9 @@ public resetscriptid:string="";
   }
   receiveScriptid(value:string){
     this.selectedscriptid=value;
-    
+  }
+  async OpenDemoBuy(){
+    const modal=await this.modalController.create({component:DemocalculationPage});
+    return await modal.present();
   }
 }

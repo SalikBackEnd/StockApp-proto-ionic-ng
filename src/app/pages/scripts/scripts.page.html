@@ -1,3 +1,4 @@
+
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start" (click)="Dismiss()">
@@ -7,37 +8,34 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-card *ngFor="let s of scripts">
-      <ion-item-sliding>
-        <ion-item>
-          <ion-card-header>
-            <ion-card-title>{{s.name}}</ion-card-title>
-            <ion-card-subtitle>Slide right to add or remove from favorites.</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content><ion-icon class="icon-heart" *ngIf="s.fav == true" slot="icon-only" name="heart" color="danger"></ion-icon></ion-card-content>
-        </ion-item>
-        <ion-item-options  side="start" >
-          <ion-item-option *ngIf="s.fav == false" (click)="addFavScripts(s.id)" >
-            <ion-icon slot="icon-only" color="secondary" name="heart" ></ion-icon>
-          </ion-item-option>
-          <ion-item-option *ngIf="s.fav == true" color="danger" (click)="removeFavScripts(s.id)">
-            <ion-icon slot="icon-only" color="warning" name="heart-dislike-outline"></ion-icon>
-          </ion-item-option>
-        </ion-item-options>
-        <!-- <ion-item-options *ngIf="s.fav == true" side="start" >
-          <ion-item-option color="danger" (click)="removeFavScripts(s.id)">
-            <ion-icon slot="icon-only" color="warning" name="heart-dislike-outline"></ion-icon>
-          </ion-item-option>
-        </ion-item-options> -->
-      </ion-item-sliding>
-    </ion-card>
-  </ion-list>  
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Loading...">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+<ion-content class="ion-justify-content-center">
+ <!-- (click)="addFavScripts(s.id,s.fav)" -->
+
+         <ion-list>
+            <ion-item  *ngFor="let s of scripts"  >
+              <ion-grid fixed>
+                <ion-row class="ion-align-items-center">
+                  <ion-col size="8">
+                   <ion-card-header>
+                     <ion-card-subtitle>Scripts</ion-card-subtitle>
+                     <ion-card-title>{{s.name}}</ion-card-title>
+                   </ion-card-header>
+                  </ion-col>
+                  <!-- <ion-col size="4" class="ion-align-items-center">
+                   <ion-icon *ngIf="s.fav == true" class="icon-heart" name="heart" color="danger"></ion-icon>
+                   <ion-icon *ngIf="s.fav == false" class="icon-heart" name="heart-outline" color="danger"></ion-icon>
+                  </ion-col> -->
+                   <ion-col size="4" class="ion-align-items-center ion-text-center">
+                      <ion-button *ngIf="s.fav == true" color="danger" (click)="addFavScripts(s.id,s.fav)"></ion-button>
+                      <ion-button *ngIf="s.fav == false" color="light" (click)="addFavScripts(s.id,s.fav)" ></ion-button>
+                   <!-- <ion-icon   name="heart" ></ion-icon> -->
+                   <!-- <ion-icon *ngIf="s.fav == false"  name="heart-outline" ></ion-icon> -->
+                  </ion-col> 
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ion-list>
+        <!-- </ion-card> -->
+     
+    
 </ion-content>

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, SimpleChanges,EventEmitter } from '@angular/core';
-import { Tables, TransactionType } from 'src/app/services/helper.service';
+import { HelperService, Tables, TransactionType } from 'src/app/services/helper.service';
 
 import { LocalService } from 'src/app/services/local.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -21,6 +21,9 @@ export class CalculationComponent implements OnInit {
   public avgCost:number;
   public Sharecount:number;
   public taxapply:number;
+  public NewQty:number;
+  public CurrentAvg:number;
+  public NewAvg:number;
 
   @Input() sQuantity:number;
   @Input() amount:number;
@@ -36,39 +39,61 @@ export class CalculationComponent implements OnInit {
   public buyList:any=[];
   public sellList:any=[];
   public fullList:any=[];
-  constructor(public local:LocalService,public toast:ToastService) { }
+  constructor(public local:LocalService,public toast:ToastService,public helper:HelperService) { }
 
   ngOnInit() {
     // this.avgCost=this.AverageShareCost();
   }
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['sQuantity'] || changes['amount'] ) {
-        // Do your logic here
-        if(this.page=='buy'){
-          this.totalInvested();
-          this.totalCostTnC(this.taxapply);
-          // this.emitAmount(this.tInvest);
-          
-          this.ifNoValue();
+    if (changes['sQuantity'] || changes['amount']) {
+      this.totalInvested();
+      this.totalCostTnC(this.taxapply);
+      this.ifNoValue();
+    
+      if (this.page == 'demo-buy') {
+        if (this.sQuantity > 0 && this.sQuantity != undefined && this.Sharecount > 0 && this.Sharecount != undefined) {
+          this.NewQty = this.Sharecount + this.sQuantity;
+          if (this.tax)
+            this.NewAvg = this.newAverage(this.scriptid, this.sQuantity, this.tCost);
+          else
+            this.NewAvg = this.newAverage(this.scriptid, this.sQuantity, this.tInvest);
         }
-        if(this.page=='sell'){
-          this.totalInvested();
-          this.totalCostTnC(this.taxapply);
-          // this.emitAmount(this.tInvest);
-          
-          this.ifNoValue();
-        }
-      
-    }
-    if(changes['scriptid']){
-      if(this.page=='sell'){
-        this.Sharecount=this.countShareswrtScript(this.scriptid);
-      
+        this.ifNoValue();
+        this.demo_buyCodeBlock();
       }
     }
-  
-}
-
+    if (changes['scriptid']) {
+      if (this.page == 'sell' || this.page == 'demo-buy') {
+        this.Sharecount = this.countShareswrtScript(this.scriptid);
+        if (this.sQuantity > 0 && this.sQuantity != undefined)
+          this.NewQty = this.Sharecount + this.sQuantity;
+        if (this.scriptid > 0 && this.scriptid != null && this.scriptid != undefined)
+          this.CurrentAvg = this.currentAverage(this.scriptid);
+      }
+      this.ifNoValue();
+      this.demo_buyCodeBlock();
+    }
+    if (changes['tax']) {
+      this.demo_buyCodeBlock();
+    }
+  }
+  demo_buyCodeBlock(){
+    if (this.page == 'demo-buy') {
+      if (this.tax){
+        if(this.sQuantity>0 && this.tCost>0)
+        this.NewAvg = this.newAverage(this.scriptid, this.sQuantity, this.tCost);
+        else
+        this.NewAvg=0;
+      }
+      else{
+        if(this.sQuantity>0 && this.tInvest>0)
+        this.NewAvg = this.newAverage(this.scriptid, this.sQuantity, this.tInvest);
+        else
+        this.NewAvg=0;
+      }
+        
+    }
+  }
   totalInvested(){
     let Quantity= this.sQuantity;
     let Amount=this.amount;
@@ -108,6 +133,12 @@ export class CalculationComponent implements OnInit {
     }
     if(this.tInvest==undefined ||this.tInvest==null || isNaN(this.tInvest)){
       this.tInvest=0;
+    }
+    if(this.CurrentAvg==undefined ||this.CurrentAvg==null || isNaN(this.CurrentAvg)){
+      this.CurrentAvg=0;
+    }
+    if(this.NewQty==undefined ||this.NewQty==null || isNaN(this.NewQty)){
+      this.NewQty=0;
     }
   }
  countShareswrtScript(scriptid){
@@ -151,7 +182,7 @@ export class CalculationComponent implements OnInit {
 //   let totalShare=this.local.countTotalShares();
 //   let totalAmount=this.local.totalAmount();
 //   let avg=totalAmount/totalShare;
-//   if(isNaN(avg)){
+//   //(isNaN(avg)){
 //     return 0;
 //   }
 //   return parseFloat(avg.toFixed(2));
@@ -162,12 +193,15 @@ export class CalculationComponent implements OnInit {
   onTaxChange(){
       if(this.taxapply>=0){
         this.totalCostTnC(this.taxapply);
-       
+        //if tax change Avg also changes
+        this.NewAvg=this.newAverage(this.scriptid,this.sQuantity,this.tCost);
       }else if(this.taxapply<0){
         this.totalCostTnC(0);
+        this.NewAvg=this.newAverage(this.scriptid,this.sQuantity,this.tCost);
         this.toast.show("Pleae enter a valid Tax amount.");
      }else{
       this.totalCostTnC(0);
+      this.NewAvg=this.newAverage(this.scriptid,this.sQuantity,this.tCost);
       this.toast.show("Enter a valid Tax amount.");
      }
 
@@ -198,13 +232,13 @@ export class CalculationComponent implements OnInit {
         
         let taxcost=tax*quantity;
         this.tTax=taxcost;
-        if(this.page=="buy")
+        if(this.page=="buy" || this.page == "demo-buy")
         this.tCost=parseFloat((taxcost+tcost).toFixed(2));
         if(this.page=="sell")
         this.tCost=parseFloat(((tcost-taxcost)-(tComission*2)).toFixed(2));
       }else{
         this.tTax=0;
-        if(this.page=="buy")
+        if(this.page=="buy" || this.page == "demo-buy") 
         this.tCost=parseFloat(tcost.toFixed(3));
         if(this.page=="sell")
         this.tCost=parseFloat((tcost-(tComission*2)).toFixed(3));
@@ -229,5 +263,13 @@ export class CalculationComponent implements OnInit {
   }
   emitCost(){
     this.eTotalCost.emit(this.tCost);
+  }
+  currentAverage(id){
+   return this.helper.AverageCostbyTotalCost(id);
+  }
+  newAverage(id,newQuantity,newAmount){
+    // newAmount=(this.CurrentAvg+this.amount)/2;
+    // newAmount=newQuantity*newAmount;
+    return this.helper.AverageCostbyTotalCost(id,null,newQuantity,newAmount);
   }
 }

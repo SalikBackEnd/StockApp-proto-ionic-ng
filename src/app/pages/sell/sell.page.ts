@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { LocalService } from 'src/app/services/local.service';
 import { ToastService } from 'src/app/services/toast.service';
-import { environment } from 'src/environments/environment';
+
 import { TransactionType, HelperService, Tables } from 'src/app/services/helper.service';
 import { LoadingController } from '@ionic/angular';
 

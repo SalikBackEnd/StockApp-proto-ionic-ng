@@ -490,11 +490,17 @@ export class HelperService {
     let tAmount = sAmount ;
     return tAmount;
   }
-  AverageCostbyTotalCost(scriptid,Date=null) {
-    if(Date==null)
-    return this.AverageShareCost(this.scriptTotalBuyQuantity(scriptid), this.scriptTotalBuyCost(scriptid));
+  AverageCostbyTotalCost(scriptid,Date=null,MoreQuantity:number=null,MoreAmount:number=null) {
+    if(Date==null ){
+      if(MoreAmount  != (null||undefined||0) && MoreQuantity  != (null||undefined||0)){
+        return this.AverageShareCost(this.scriptTotalBuyQuantity(scriptid) + MoreQuantity, this.scriptTotalBuyCost(scriptid)+MoreAmount);
+      }else{
+        return this.AverageShareCost(this.scriptTotalBuyQuantity(scriptid), this.scriptTotalBuyCost(scriptid));
+      }
+    }
     if(Date!=null)
     return this.AverageShareCost(this.scriptTotalBuyQuantityBeforeDate(scriptid,Date), this.scriptTotalBuyAmountBeforeDate(scriptid,Date,true));
+    
   }
   // Sell avg. cost Method
    ActualSellCostbyTotalCost(quantity:number,actualamount:number) {
