@@ -19,7 +19,20 @@
         </ion-button>
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col size="6"> 
+        <ion-label class="from-Label">From</ion-label>
+        <ion-datetime [(ngModel)]="fromDate" (ionChange)="onFromDate()" displayFormat="MMM DD YYYY"
+          placeholder="Select Date" min="2020-01-01" [max]="maxDate"></ion-datetime>
+      </ion-col>
+      <ion-col size="6"> 
+        <ion-label class="to-Label">To</ion-label>
+        <ion-datetime [(ngModel)]="toDate" (ionChange)="onToDate()" displayFormat="MMM DD YYYY" placeholder="Select Date"
+          [min]="minDate" [max]="maxDate"></ion-datetime>
+      </ion-col>
+    </ion-row>
   </ion-grid>
+
   <ion-list *ngIf="List.length > 0">
     <ion-item-group *ngFor="let i of List">
         <ion-item-divider>

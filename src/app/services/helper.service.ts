@@ -169,8 +169,8 @@ export class HelperService {
     else
       return [];
   }
-  SoldDatesByScript(id) {
-    let sell = this.local.scriptsSellList(id);
+  SoldDatesByScript(id,from:Date=null,to:Date=null) {
+    let sell = this.ListSearch(TransactionType.Sell,from,to,id);
     if(sell.length>0){
       let date = sell.map(e => e.date);
       let datestring = sell.map(e => new Date(e.date).toDateString());
@@ -188,7 +188,7 @@ export class HelperService {
   onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
   }
-  getTransactionbyDate(date: number, sellList: Array<any>) {
+  getTransactionbyDate(date:string, sellList: Array<any>) {
     let d = new Date(date);
     d.setHours(0, 0, 0, 0);
     let list: any = [];
@@ -310,9 +310,9 @@ export class HelperService {
       if (fromDate == null && toDate ==null) {
         if (list != undefined && Array.isArray(list)) {
           return list.filter(e => {
-            if(scriptid==null)
+            if(scriptid==null  || scriptid == "" || scriptid == undefined)
             return (e.id != "" || e.id != 0) && (e.statusid == Transaction);
-            if(scriptid!=null)
+            if(scriptid!=null && scriptid != "" && scriptid != undefined)
             return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (e.scriptid == scriptid);
           });
         }
@@ -321,9 +321,9 @@ export class HelperService {
       } else if (fromDate != null && toDate == null) {
         if (list != undefined && Array.isArray(list)) {
           return list.filter(e => {
-            if(scriptid==null)
+            if(scriptid==null || scriptid == "" || scriptid == undefined)
             return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (this.compareDateFrom(e.date, fromDate));
-            if(scriptid!=null)
+            if(scriptid!=null && scriptid != "" && scriptid != undefined)
             return (e.id != "" || e.id != 0) && (e.statusid == Transaction)  && (e.scriptid == scriptid) && (this.compareDateFrom(e.date, fromDate));
           });
         }
@@ -332,9 +332,9 @@ export class HelperService {
       } else if (fromDate != null && toDate != null) {
         if (list != undefined && Array.isArray(list)) {
           return list.filter(e => {
-            if(scriptid==null)
+            if(scriptid==null || scriptid == "" || scriptid == undefined)
             return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (this.compareDateFrom(e.date, fromDate)) && (this.compareDateTo(e.date, toDate));
-            if(scriptid!=null)
+            if(scriptid!=null && scriptid != "" && scriptid != undefined)
             return (e.id != "" || e.id != 0) && (e.statusid == Transaction)  && (e.scriptid == scriptid) && (this.compareDateFrom(e.date, fromDate)) && (this.compareDateTo(e.date, toDate));
         });
         }
@@ -343,9 +343,9 @@ export class HelperService {
       } else if (fromDate == null && toDate != null) {
         if (list != undefined && Array.isArray(list)) {
           return list.filter(e => {
-            if(scriptid==null)
+            if(scriptid==null || scriptid == "" || scriptid == undefined)
             return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (this.compareDateTo(e.date, toDate));
-            if(scriptid!=null)
+            if(scriptid!=null && scriptid != "" && scriptid != undefined)
             return (e.id != "" || e.id != 0) && (e.statusid == Transaction)  && (e.scriptid == scriptid) && (this.compareDateTo(e.date, toDate));
             
         });

@@ -28,6 +28,12 @@ export class PnlPage implements OnInit {
   public selectedScript = "";
   public resetscriptid: string = "";
   public isShowingAll = true;
+  public toDate:string=null;
+  public fromDate:string=null;
+  public maxDate=new Date(Date.now()).toISOString().substr(0,10);
+  public minDate="2020-01-01";
+  public fdate:Date=null;
+  public tdate:Date=null;
   constructor(public local: LocalService, public helper: HelperService, public toast: ToastService, public loadingController: LoadingController, public viewCtrl: ModalController) {
 
     this.Populate();
@@ -76,7 +82,7 @@ export class PnlPage implements OnInit {
   PopulateWithParameter(Scriptid, fromDate: Date = null, toDate: Date = null) {
     this.Scripts = this.local.scriptlist;
     this.List = [];
-    let dates = this.helper.SoldDatesByScript(Scriptid);
+    let dates = this.helper.SoldDatesByScript(Scriptid,fromDate,toDate);
     if (dates.length > 0) {
       dates = dates.reverse();
       dates.forEach(e => {
@@ -119,13 +125,44 @@ export class PnlPage implements OnInit {
   receiveScriptid(value) {
     this.selectedScript = value;
     if (this.selectedScript != "")
-      this.PopulateWithParameter(this.selectedScript);
+    this.PopulateWithParameter(this.selectedScript,this.fdate,this.tdate);
   }
   showAll() {
     if (this.isShowingAll == false) {
       this.List = [];
       this.Populate();
       this.resetscriptid = null;
+      this.fromDate=null;
+      this.toDate=null;
+      this.fdate=null;
+      this.tdate=null;
     }
   }
+  onFromDate(){
+    
+    this.fdate=new Date(this.fromDate);  
+    this.minDate=this.fdate.toISOString().substr(0,10);
+    let idate=this.minDate;
+    if (this.toDate != null) {
+      let ndate = this.tdate.toISOString().substr(0, 10);
+      if (ndate != null) {
+        if (idate > ndate) {
+          this.toDate = null;
+          this.tdate = null;
+        }
+      }
+    }
+    this.PopulateWithParameter(this.selectedScript,this.fdate,this.tdate);
+    //this.LogList(this.togglevalue,this.fdate,this.tdate);
+  }
+  onToDate(){
+    if(this.toDate != null && this.toDate != "")
+    this.tdate=new Date(this.toDate);
+    else
+    this.tdate=null;
+
+    this.PopulateWithParameter(this.selectedScript,this.fdate,this.tdate);
+    //this.LogList(this.togglevalue,this.fdate,this.tdate);
+  }
+
 }

@@ -161,19 +161,27 @@ export class LocalService {
     else
     return [];
   }
-  scriptsSellList(scriptid){
-    let list:any;
-    list=this.SellList();
-    if(list != undefined){
-    let filtered= list.filter(e=>e.scriptid==scriptid);
-    if(filtered.length>0){
-      return filtered;
-    }else{
-      return [];
-    }
+  scriptsSellList(scriptid) {
+    let list: any;
+    list = this.SellList();
+    if (list != undefined) {
+      let filtered:any =[];
+      //if scriptid is given then fiiter else return whole list.
+      if(scriptid != null && scriptid != "" && scriptid != undefined){
+        filtered = list.filter(e => e.scriptid == scriptid);
+        if (filtered.length > 0) {
+          return filtered;
+        } else {
+          return [];
+        }
+      }else{
+        return list;
+      }
+      
+     
     }
     else
-    return [];
+      return [];
   }
   PopulateFavScript(){
     let favScripts:any=[];
