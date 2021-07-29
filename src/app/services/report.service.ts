@@ -16,15 +16,23 @@ export class ReportService {
     this.currentPlatform=platform.platforms();
   } 
   async isCreated(rootdirectory,directoryname){
-  let exist= this.File.checkDir(rootdirectory,directoryname);
-  if(!exist){
-    await this.File.createDir(rootdirectory,directoryname,true).then(s=>{
+    let created=true;
+    console.log("In isCreated!")
+  await this.File.checkDir(rootdirectory,directoryname).then(s=>{
+     created=true;
+  },async err=>{
+    console.log("Direct not exist")
+     await this.File.createDir(rootdirectory,directoryname,true).then(s=>{
       console.log("Directory Created! at "+rootdirectory);
-      return true;
+       created=true;
+    },err=>{
+      console.log("Created Dir Error")
+      console.log(err)
+      created=false;
     });
-  }else{
-    return true;
-  }
+    return created;
+  });
+  return created;
   }
   async writeJSON(filename,object){
    console.log(this.platform.platforms());
@@ -35,21 +43,34 @@ export class ReportService {
   //  }
   }
   async writeJSONAndroid(filename,object){
+    object=JSON.stringify(object);
     let datadirectory=this.File.dataDirectory;
-    let directoryname="Stockfolio_Reports";
+    let directoryname="StockfolioReports";
     let extrootdirectory=this.File.externalRootDirectory;
     let condition=await this.isCreated(datadirectory,directoryname);
     if (condition) {
       await this.File.createFile(datadirectory+directoryname, filename, true).then(
         (v) => {
-          this.File.writeFile(v.fullPath, filename, object).then((s)=> {
+          console.log("file created!")
+          this.File.writeFile(datadirectory+directoryname, filename, object,{append:true}).then((s)=> {
             // let f= this.isCreated(extrootdirectory,directoryname);
             // if(f)
             //  this.File.moveFile(v.fullPath,filename,extrootdirectory,directoryname);
             console.log("file written!")
-          }, err => { console.log(err) });
+          }, err => {
+            console.log("writeFile Error")
+            console.log(err)
+             }).catch(err=>{
+              this.File.writeFile(datadirectory+directoryname, filename, object).then((s)=> {
+               
+                console.log("file written!")
+              });
+             });
         },
-        err => { console.log(err) });
+        err => { 
+          console.log("createFile Error")
+          console.log(err)
+         });
     }
   }
    writeJSONdesktop(object){

@@ -128,8 +128,8 @@ export class InventoryPage implements OnInit {
     };
     if (this.myPlatform == Platforms.Mobile) {
       
-      await this.report.writeJSON("firstfile.json", this.reportObject).then(
-        s => { console.log("Successfully created!") }, err => { console.log(err) });
+      await this.report.writeJSON("firstfile.json", this.reportObject);
+        
     } 
     else if (this.myPlatform == Platforms.Web) {
       await this.report.writeJSONdesktop(this.reportObject).then((s) => {
