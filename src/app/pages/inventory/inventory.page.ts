@@ -19,6 +19,11 @@ import { ScriptsPage } from '../scripts/scripts.page';
 })
 export class InventoryPage implements OnInit {
 
+  public reportObject={
+    Inventory:[],
+    ProfitLoss:[],
+    Transactions:[]
+  }
   public List={
     scripts:[],
     shareCount:[],
@@ -45,8 +50,6 @@ export class InventoryPage implements OnInit {
     this.myPlatform=helper.getPlatForm();
     if (this.myPlatform == Platforms.Web){
       this.isWeb = Platforms.Web;
-      // this.report.writeJSONdesktop({report:[{A:"aaaaaaa",B:"bbbbb"}]});
-        
     }
   }
   ngOnInit() {
@@ -81,7 +84,7 @@ export class InventoryPage implements OnInit {
     });
    
      this.Scriptitem=this.List.scripts;
-    
+     
   }
  
   GetScriptsList(){
@@ -118,19 +121,26 @@ export class InventoryPage implements OnInit {
     return await modal.present();
    }
   async GenerateReport() {
+    this.reportObject={
+      Inventory:this.Scriptitem,
+      ProfitLoss:[],
+      Transactions:[]
+    };
     if (this.myPlatform == Platforms.Mobile) {
-      await this.report.writeJSON("/firstfile.json", { report: [{ A: "aaaaaaa", B: "bbbbb" }] }).then(
+      
+      await this.report.writeJSON("firstfile.json", this.reportObject).then(
         s => { console.log("Successfully created!") }, err => { console.log(err) });
-    } else if (this.myPlatform == Platforms.Web) {
-      await this.report.writeJSONdesktop(this.Scriptitem).then((s) => {
+    } 
+    else if (this.myPlatform == Platforms.Web) {
+      await this.report.writeJSONdesktop(this.reportObject).then((s) => {
         this.isGenerated = true;
-        this.downloadJsonHref=this.report.downloadJsonHref;
+        this.downloadJsonHref = this.report.downloadJsonHref;
         console.log("generated!");
-        this.timestamp=Date.now();
-        this.downloadfile(this.downloadJsonHref,"Report_"+this.timestamp+".json");
+        this.timestamp = Date.now();
+        this.downloadfile(this.downloadJsonHref, "Report_" + this.timestamp + ".json");
       });
     }
-    
+
   }
   downloadfile(Urlobj:object,filename){
     var a = document.createElement('A');

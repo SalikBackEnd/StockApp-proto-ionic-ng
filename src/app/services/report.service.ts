@@ -15,6 +15,17 @@ export class ReportService {
   constructor(private File:File,private platform:Platform,private fileChooser:FileChooser,private sanitizer:DomSanitizer) { 
     this.currentPlatform=platform.platforms();
   } 
+  async isCreated(rootdirectory,directoryname){
+  let exist= this.File.checkDir(rootdirectory,directoryname);
+  if(!exist){
+    await this.File.createDir(rootdirectory,directoryname,true).then(s=>{
+      console.log("Directory Created! at "+rootdirectory);
+      return true;
+    });
+  }else{
+    return true;
+  }
+  }
   async writeJSON(filename,object){
    console.log(this.platform.platforms());
    if(this.currentPlatform.includes('hybrid'))
@@ -24,13 +35,22 @@ export class ReportService {
   //  }
   }
   async writeJSONAndroid(filename,object){
-    await this.File.createFile(this.File.cacheDirectory,filename,true).then(
-      (v)=>{
-        this.File.writeFile(this.File.cacheDirectory,filename,object).then((s)=>{
-          console.log(s);
-        },err=>{console.log(err)});
-      },
-      err=>{console.log(err)});
+    let datadirectory=this.File.dataDirectory;
+    let directoryname="Stockfolio_Reports";
+    let extrootdirectory=this.File.externalRootDirectory;
+    let condition=await this.isCreated(extrootdirectory,directoryname);
+    if (condition) {
+      await this.File.createFile(datadirectory+directoryname, filename, true).then(
+        (v) => {
+          this.File.writeFile(v.fullPath, filename, object).then((s)=> {
+            // let f= this.isCreated(extrootdirectory,directoryname);
+            // if(f)
+            //  this.File.moveFile(v.fullPath,filename,extrootdirectory,directoryname);
+            console.log("file written!")
+          }, err => { console.log(err) });
+        },
+        err => { console.log(err) });
+    }
   }
    writeJSONdesktop(object){
     return new Promise<void>((resolve,reject)=>{
