@@ -17,9 +17,12 @@
       </ion-col>
       <ion-col size="6">
        <ion-item>
-        Buy
+        <!-- Buy
         <ion-toggle color="light" [(ngModel)]="togglevalue" (ionChange)="onToggle()"></ion-toggle>
-        Sell
+        Sell -->
+        <ion-select (ionChange)="onTransctTypeSelect($event.target.value)" value="2" placeholder="Transaction Type">
+          <ion-select-option *ngFor="let type of TransctType" value="{{type.value}}" >{{type.name}}</ion-select-option>
+        </ion-select>
        </ion-item>
       </ion-col>
     </ion-row>
@@ -38,7 +41,11 @@
     <ion-datetime [(ngModel)]="toDate" (ionChange)="onToDate()" displayFormat="MMM DD YYYY" placeholder="Select Date"
       [min]="minDate" [max]="maxDate"></ion-datetime>
   </ion-item>
-  
+  <ion-item>
+    <ion-label><ion-text color="medium">Color Representation: </ion-text></ion-label>
+    
+    <ion-label class="ion-text-end"><ion-badge color="primary"><h4>Buyed</h4></ion-badge><ion-badge color="success"><h4>Sold</h4></ion-badge></ion-label>
+  </ion-item>
   <ion-item>
     <ion-label>
       <ion-text color="primary"><b>Scripts</b></ion-text>
@@ -55,11 +62,13 @@
   </ion-item>
 
   <ion-list>
-    <ion-item *ngFor="let log of loglist | filter:scriptFilter">
+    <ion-item *ngFor="let log of loglist ">
       <ion-label>{{log.script}}</ion-label>
+      <!-- <ion-label *ngIf="log.status == 1" color="warning">{{log.script}}</ion-label> -->
       <ion-label>{{log.price}}</ion-label>
       <ion-label>{{log.qty}}</ion-label>
-      <ion-badge color="primary">{{log.date}}</ion-badge>
+      <ion-badge *ngIf="log.status == 0" color="primary">{{log.date}}</ion-badge>
+      <ion-badge *ngIf="log.status == 1" color="success">{{log.date}}</ion-badge>
     </ion-item>
   </ion-list>
 </ion-content>

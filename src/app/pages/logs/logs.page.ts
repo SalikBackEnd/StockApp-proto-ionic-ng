@@ -16,9 +16,14 @@ export class LogsPage implements OnInit {
     script: "",
     price: 0,
     qty: 0,
-    date: ""
+    date: "",
+    status:0
   }
-  public togglevalue: boolean = false;//false means buy and true means sell
+  public TransctType=[];
+  public StatusBuy=TransactionType.Buy;
+  public StatusSell=TransactionType.Sell;
+
+  public togglevalue: number = TransactionType.Both;//false means buy and true means sell
   public scriptFilter:string;
   public fromDate:string=null;
   public toDate:string=null;
@@ -28,6 +33,7 @@ export class LogsPage implements OnInit {
   public minDate="2020-01-01";
   public selectedscriptid:string=null;
   constructor(private local: LocalService, private loading:LoadingController,private toast: ToastService, private helper: HelperService, public viewCtrl: ModalController) {
+    this.PopulateTypeSelect();
     this.LogList(this.togglevalue);
   }
 
@@ -48,19 +54,22 @@ export class LogsPage implements OnInit {
           script: scriptname,
           price: parseFloat((buy.price).toFixed(2)),
           qty: buy.quantity,
-          date: date
+          date: date,
+          status:buy.statusid
         };
         this.loglist.push(this.logs);
       });
     }else{
       this.loglist=[];
     }
-    console.log("List length:"+list.length)
+    console.log(list)
   }
   Dismiss() {
     this.viewCtrl.dismiss({ somedata: 'Dismissed' });
   }
-  async onToggle() {
+  async onTransctTypeSelect(value) {
+    value=parseInt(value);
+    this.togglevalue=value;
     const loading=await this.loading.create({
       cssClass: 'my-custom-class',
       message: 'Loading...',
@@ -68,16 +77,16 @@ export class LogsPage implements OnInit {
     });
     await loading.present();
     loading.onDidDismiss().then(()=>{
-      this.LogList(this.togglevalue,this.fdate,this.tdate,this.selectedscriptid);
+      this.LogList(value,this.fdate,this.tdate,this.selectedscriptid);
     });
     
   }
-  LogList(toggle:boolean,from:Date=null,to:Date=null,scriptid=null){
+  LogList(toggle:number,from:Date=null,to:Date=null,scriptid=null){
     let list:any=[];
-      if(toggle==true)
-      list=this.helper.ListSearch(TransactionType.Sell,from,to,scriptid);
-      if(toggle==false)
-      list=this.helper.ListSearch(TransactionType.Buy,from,to,scriptid);
+      if(!(toggle<0))
+      list=this.helper.ListSearch(toggle,from,to,scriptid);
+      // if(toggle==false)
+      // list=this.helper.ListSearch(TransactionType.Buy,from,to,scriptid);
 
       this.PopulateLog(list);
       return;
@@ -97,5 +106,10 @@ export class LogsPage implements OnInit {
   receiveScriptid(value){
     this.selectedscriptid=value;
     this.onSearch();
+  }
+  PopulateTypeSelect(){
+   this.TransctType.push({name:"All",value:TransactionType.Both,isSelected:true},
+   {name:"Buy",value:TransactionType.Buy,isSelected:false},
+   {name:"Sell",value:TransactionType.Sell,isSelected:false});
   }
 }

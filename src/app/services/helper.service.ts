@@ -4,7 +4,8 @@ import { LocalService } from './local.service';
 
 export enum TransactionType {
   Buy = 0,
-  Sell = 1
+  Sell = 1,
+  Both=2
 }
 //new table of key will be added here
 export enum Tables {
@@ -22,6 +23,7 @@ export enum DataTypes{
   Object="object",
   Array="array"
 }
+
 @Injectable({
   providedIn: 'root'
 })
@@ -306,14 +308,20 @@ export class HelperService {
   ListSearch(Transaction: number = TransactionType.Buy, fromDate: Date = null, toDate: Date = null,scriptid=null) {
     let list: any = [];
     list = this.local.GetData(Tables.Transaction);
-    if (Transaction == TransactionType.Buy || Transaction == TransactionType.Sell) {
+    if (Transaction == TransactionType.Buy || Transaction == TransactionType.Sell || Transaction == TransactionType.Both) {
       if (fromDate == null && toDate ==null) {
         if (list != undefined && Array.isArray(list)) {
           return list.filter(e => {
-            if(scriptid==null  || scriptid == "" || scriptid == undefined)
-            return (e.id != "" || e.id != 0) && (e.statusid == Transaction);
-            if(scriptid!=null && scriptid != "" && scriptid != undefined)
-            return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (e.scriptid == scriptid);
+            if (scriptid == null || scriptid == "" || scriptid == undefined)
+              if (Transaction != TransactionType.Both)
+                return (e.id != "" || e.id != 0) && (e.statusid == Transaction);
+              else
+                return (e.id != "" || e.id != 0);
+            if (scriptid != null && scriptid != "" && scriptid != undefined)
+              if (Transaction != TransactionType.Both)
+                return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (e.scriptid == scriptid);
+              else
+                return (e.id != "" || e.id != 0) && (e.scriptid == scriptid);
           });
         }
         else
@@ -321,10 +329,18 @@ export class HelperService {
       } else if (fromDate != null && toDate == null) {
         if (list != undefined && Array.isArray(list)) {
           return list.filter(e => {
-            if(scriptid==null || scriptid == "" || scriptid == undefined)
-            return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (this.compareDateFrom(e.date, fromDate));
-            if(scriptid!=null && scriptid != "" && scriptid != undefined)
-            return (e.id != "" || e.id != 0) && (e.statusid == Transaction)  && (e.scriptid == scriptid) && (this.compareDateFrom(e.date, fromDate));
+            if (scriptid == null || scriptid == "" || scriptid == undefined) {
+              if (Transaction != TransactionType.Both)
+                return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (this.compareDateFrom(e.date, fromDate));
+              else
+                return (e.id != "" || e.id != 0) && (this.compareDateFrom(e.date, fromDate));
+            }
+            if (scriptid != null && scriptid != "" && scriptid != undefined) {
+              if (Transaction != TransactionType.Both)
+                return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (e.scriptid == scriptid) && (this.compareDateFrom(e.date, fromDate));
+              else
+                return (e.id != "" || e.id != 0) && (e.scriptid == scriptid) && (this.compareDateFrom(e.date, fromDate));
+            }
           });
         }
         else
@@ -332,22 +348,37 @@ export class HelperService {
       } else if (fromDate != null && toDate != null) {
         if (list != undefined && Array.isArray(list)) {
           return list.filter(e => {
-            if(scriptid==null || scriptid == "" || scriptid == undefined)
-            return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (this.compareDateFrom(e.date, fromDate)) && (this.compareDateTo(e.date, toDate));
-            if(scriptid!=null && scriptid != "" && scriptid != undefined)
-            return (e.id != "" || e.id != 0) && (e.statusid == Transaction)  && (e.scriptid == scriptid) && (this.compareDateFrom(e.date, fromDate)) && (this.compareDateTo(e.date, toDate));
-        });
+            if (scriptid == null || scriptid == "" || scriptid == undefined) {
+              if (Transaction != TransactionType.Both)
+                return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (this.compareDateFrom(e.date, fromDate)) && (this.compareDateTo(e.date, toDate));
+              else
+                return (e.id != "" || e.id != 0) && (this.compareDateFrom(e.date, fromDate)) && (this.compareDateTo(e.date, toDate));
+            }
+            if (scriptid != null && scriptid != "" && scriptid != undefined) {
+              if (Transaction != TransactionType.Both)
+                return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (e.scriptid == scriptid) && (this.compareDateFrom(e.date, fromDate)) && (this.compareDateTo(e.date, toDate));
+              else
+                return (e.id != "" || e.id != 0) && (e.scriptid == scriptid) && (this.compareDateFrom(e.date, fromDate)) && (this.compareDateTo(e.date, toDate));
+            }
+          });
         }
         else
           return [];
       } else if (fromDate == null && toDate != null) {
         if (list != undefined && Array.isArray(list)) {
           return list.filter(e => {
-            if(scriptid==null || scriptid == "" || scriptid == undefined)
-            return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (this.compareDateTo(e.date, toDate));
-            if(scriptid!=null && scriptid != "" && scriptid != undefined)
-            return (e.id != "" || e.id != 0) && (e.statusid == Transaction)  && (e.scriptid == scriptid) && (this.compareDateTo(e.date, toDate));
-            
+            if (scriptid == null || scriptid == "" || scriptid == undefined) {
+              if (Transaction != TransactionType.Both)
+                return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (this.compareDateTo(e.date, toDate));
+              else
+                return (e.id != "" || e.id != 0) && (this.compareDateTo(e.date, toDate));
+            }
+            if (scriptid != null && scriptid != "" && scriptid != undefined) {
+              if (Transaction != TransactionType.Both)
+                return (e.id != "" || e.id != 0) && (e.statusid == Transaction) && (e.scriptid == scriptid) && (this.compareDateTo(e.date, toDate));
+              else
+                return (e.id != "" || e.id != 0) && (e.scriptid == scriptid) && (this.compareDateTo(e.date, toDate));
+            }
         });
         }
         else
