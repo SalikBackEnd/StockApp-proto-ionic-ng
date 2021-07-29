@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Platform } from '@ionic/angular';
 
 import { LocalService } from './local.service';
 
+export enum Platforms{
+  Web=1,
+  Mobile=2,
+  
+}
 export enum TransactionType {
   Buy = 0,
   Sell = 1,
@@ -32,8 +38,10 @@ export class HelperService {
   //create enum here
 
   public favScriptList:any=[];
-  constructor(public local: LocalService) {
+  public myplatform:Platforms=null;
+  constructor(public local: LocalService,private platform:Platform) {
     this.GetFavScripts();
+    this.myplatform=this.getPlatForm();
    }
   scriptsBuyQuantity(sid,list: any = []) {
     
@@ -627,5 +635,17 @@ export class HelperService {
     }else{
       this.favScriptList= [];
     }
+  }
+  getPlatForm(){
+    let p:any=[];
+    p=this.platform.platforms();
+    if(p.includes("desktop")){
+      return Platforms.Web;
+    }else if(p.includes("hybrid") || p.includes("capacitor")){
+      return Platforms.Mobile;
+    }else if(p.includes("mobileweb")){
+      return Platforms.Web;
+    }
+    
   }
 }

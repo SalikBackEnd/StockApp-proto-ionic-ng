@@ -10,6 +10,9 @@
       <ion-button (click)="OpenPnL()">Profit & Loss</ion-button>
       <ion-button (click)="OpenLogs()">Trade Logs</ion-button>
       <ion-button (click)="OpenScripts()">Scripts</ion-button>
+      <ion-button (click)="GenerateReport()">Generate Report</ion-button>
+      
+      <!-- <a *ngIf="isGenerated" ion-button title="Download JSON" [href]="downloadJsonHref" download="Report_{{timestamp}}.json">Report_{{timestamp}}</a> -->
     </ion-col>
   </ion-row>
   <ion-list>

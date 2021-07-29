@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { SafeUrl } from '@angular/platform-browser';
 import { ModalController } from '@ionic/angular';
 import { ViewscriptPage } from 'src/app/modal/viewscript/viewscript.page';
-import { HelperService, Tables } from 'src/app/services/helper.service';
+import { HelperService, Platforms, Tables } from 'src/app/services/helper.service';
 
 import { LocalService } from 'src/app/services/local.service';
+import { ReportService } from 'src/app/services/report.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { LogsPage } from '../logs/logs.page';
 import { PnlPage } from '../pnl/pnl.page';
@@ -33,14 +35,25 @@ export class InventoryPage implements OnInit {
   public Scriptitem:any=[];
   public limit=3;
   public index=0;
-  constructor(public local:LocalService,public toast:ToastService,public helper:HelperService,public modalcontroller:ModalController) { 
-    this.scriptList=this.local.scriptlist;
+  public myPlatform:Platforms=null;
+  public isWeb:number=0;
+  public downloadJsonHref:any;
+  public isGenerated=false;
+  public timestamp:any= Date.now();
+  constructor(public local:LocalService,public toast:ToastService,public helper:HelperService,public modalcontroller:ModalController,public report:ReportService) { 
+    this.scriptList=local.scriptlist;
+    this.myPlatform=helper.getPlatForm();
+    if (this.myPlatform == Platforms.Web){
+      this.isWeb = Platforms.Web;
+      // this.report.writeJSONdesktop({report:[{A:"aaaaaaa",B:"bbbbb"}]});
+        
+    }
   }
-
   ngOnInit() {
   }
   ionViewWillEnter(){
     this.PopulateInventory();
+    this.isGenerated=false;
   }
   PopulateInventory(){
     this.List={
@@ -104,6 +117,29 @@ export class InventoryPage implements OnInit {
     const modal=await this.modalcontroller.create({component:ScriptsPage});
     return await modal.present();
    }
+  async GenerateReport() {
+    if (this.myPlatform == Platforms.Mobile) {
+      await this.report.writeJSON("/firstfile.json", { report: [{ A: "aaaaaaa", B: "bbbbb" }] }).then(
+        s => { console.log("Successfully created!") }, err => { console.log(err) });
+    } else if (this.myPlatform == Platforms.Web) {
+      await this.report.writeJSONdesktop(this.Scriptitem).then((s) => {
+        this.isGenerated = true;
+        this.downloadJsonHref=this.report.downloadJsonHref;
+        console.log("generated!");
+        this.timestamp=Date.now();
+        this.downloadfile(this.downloadJsonHref,"Report_"+this.timestamp+".json");
+      });
+    }
+    
+  }
+  downloadfile(Urlobj:object,filename){
+    var a = document.createElement('A');
+    a.setAttribute("href",Object.values(Urlobj)[0]);
+    a.setAttribute("download",filename);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
   //  doInfinite(event){
   //   console.log('Begin async operation');
   //     setTimeout(()=>{
