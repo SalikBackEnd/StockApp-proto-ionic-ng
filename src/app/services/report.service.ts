@@ -38,7 +38,7 @@ export class ReportService {
     let datadirectory=this.File.dataDirectory;
     let directoryname="Stockfolio_Reports";
     let extrootdirectory=this.File.externalRootDirectory;
-    let condition=await this.isCreated(extrootdirectory,directoryname);
+    let condition=await this.isCreated(datadirectory,directoryname);
     if (condition) {
       await this.File.createFile(datadirectory+directoryname, filename, true).then(
         (v) => {
