@@ -16,6 +16,7 @@ export class ReportService {
   constructor(private File:File,private platform:Platform,private fileChooser:FileChooser,private sanitizer:DomSanitizer) { 
     this.currentPlatform=platform.platforms();
   } 
+  
   async isCreated(rootdirectory,directoryname){
     let created=true;
     console.log("In isCreated!")

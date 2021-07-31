@@ -24,7 +24,8 @@ export class InventoryPage implements OnInit {
     Inventory:[],
     ProfitLoss:[],
     Transactions:[]
-  }
+  } 
+  
   public List={
     scripts:[],
     shareCount:[],
