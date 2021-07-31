@@ -3,6 +3,7 @@ import { SafeUrl } from '@angular/platform-browser';
 import { ModalController } from '@ionic/angular';
 import { ViewscriptPage } from 'src/app/modal/viewscript/viewscript.page';
 import { HelperService, Platforms, Tables } from 'src/app/services/helper.service';
+import { LoaderService } from 'src/app/services/loader.service';
 
 import { LocalService } from 'src/app/services/local.service';
 import { ReportService } from 'src/app/services/report.service';
@@ -38,14 +39,21 @@ export class InventoryPage implements OnInit {
   public sellList:any=[];
   public scriptList:any=[];
   public Scriptitem:any=[];
+
   public limit=3;
   public index=0;
-  public myPlatform:Platforms=null;
   public isWeb:number=0;
-  public downloadJsonHref:any;
+
+  public myPlatform:Platforms=null;
+  
   public isGenerated=false;
+
+  public downloadJsonHref:any;
   public timestamp:any= Date.now();
-  constructor(public local:LocalService,public toast:ToastService,public helper:HelperService,public modalcontroller:ModalController,public report:ReportService) { 
+
+  public isDownloadAvailable=false;
+
+  constructor(public local:LocalService,public toast:ToastService,private loader:LoaderService,public helper:HelperService,public modalcontroller:ModalController,public report:ReportService) { 
     this.scriptList=local.scriptlist;
     this.myPlatform=helper.getPlatForm();
     if (this.myPlatform == Platforms.Web){
@@ -56,6 +64,7 @@ export class InventoryPage implements OnInit {
   }
   ionViewWillEnter(){
     this.PopulateInventory();
+    this.checkIsDownloadAvailable();
     this.isGenerated=false;
   }
   PopulateInventory(){
@@ -126,21 +135,36 @@ export class InventoryPage implements OnInit {
       ProfitLoss:[],
       Transactions:[]
     };
-    if (this.myPlatform == Platforms.Mobile) {
-      
-      await this.report.writeJSON("firstfile.json", this.reportObject);
-        
-    } 
-    else if (this.myPlatform == Platforms.Web) {
-      await this.report.writeJSONdesktop(this.reportObject).then((s) => {
-        this.isGenerated = true;
-        this.downloadJsonHref = this.report.downloadJsonHref;
-        console.log("generated!");
-        this.timestamp = Date.now();
-        this.downloadfile(this.downloadJsonHref, "Report_" + this.timestamp + ".json");
-      });
+    let loader=this.loader.show("Generating Report...");
+    if (this.isDownloadAvailable = true) {
+      if (this.myPlatform == Platforms.Mobile) {
+        await this.report.writeJSON("Report_" + this.timestamp + ".json", this.reportObject).then(
+          async res=>{
+            console.log(res);
+            //this.toast.show("Report generated in local storage under 'StockfolioReports' directory.");
+            await this.loader.dismiss(loader).then(res=>{
+              this.toast.show("Report generated in local storage under 'StockfolioReports' directory.");
+            });
+          },
+          err=>{
+            console.log(err);
+            this.toast.show("Error occur while generating report!")  
+          }
+          );
+      }
+      else if (this.myPlatform == Platforms.Web) {
+        await this.report.writeJSONdesktop(this.reportObject).then((s) => {
+          this.isGenerated = true;
+          this.downloadJsonHref = this.report.downloadJsonHref;
+          console.log("generated!");
+          this.timestamp = Date.now();
+          this.downloadfile(this.downloadJsonHref, "Report_" + this.timestamp + ".json");
+        }, err => console.log(err)
+        );
+      }
+    }else{
+      this.toast.show("No data to generate report.")
     }
-
   }
   downloadfile(Urlobj:object,filename){
     var a = document.createElement('A');
@@ -149,6 +173,12 @@ export class InventoryPage implements OnInit {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+  }
+  checkIsDownloadAvailable(Inventory:any=[],ProfitLoss:any=[],Transactions:any=[]){
+    if(Inventory.length<=0){
+     this.isDownloadAvailable=false;
+    }
+    this.isDownloadAvailable=true;
   }
   //  doInfinite(event){
   //   console.log('Begin async operation');

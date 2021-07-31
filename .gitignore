@@ -29,6 +29,7 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+/android
 android/.gitignore
 android/build.gradle
 android/capacitor.settings.gradle
@@ -88,3 +89,5 @@ android/app/src/main/res/xml/file_paths.xml
 android/app/src/test/java/com/getcapacitor/myapp/ExampleUnitTest.java
 android/gradle/wrapper/gradle-wrapper.jar
 android/gradle/wrapper/gradle-wrapper.properties
+android/app/src/main/java/com/dSmart/Stockfolio/MainActivity.java
+android\app\src\main\AndroidManifest.xml.orig

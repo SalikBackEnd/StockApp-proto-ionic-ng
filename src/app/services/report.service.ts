@@ -6,6 +6,7 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -35,53 +36,56 @@ export class ReportService {
   return created;
   }
   async writeJSON(filename,object){
-   console.log(this.platform.platforms());
-   if(this.currentPlatform.includes('hybrid'))
-    await this.writeJSONAndroid(filename,object);
-  //  }else if(this.currentPlatform.includes('desktop') || this.currentPlatform.includes('mobileweb')){
-  //   await this.writeJSONdesktop(object).;
-  //  }
+    return new Promise<string>(async (resolve,rejected)=>{
+      console.log(this.platform.platforms());
+      if(this.currentPlatform.includes('hybrid'))
+       await this.writeJSONAndroid(filename,object).then(
+         res=>resolve(res),
+         err=>rejected(err)
+        );
+    });
+  
+  
   }
-  async writeJSONAndroid(filename,object){
-    object=JSON.stringify(object);
-    let datadirectory=this.File.dataDirectory;
-    let directoryname="StockfolioReports";
-    let extrootdirectory=this.File.externalRootDirectory;
-    let condition=await this.isCreated(datadirectory,directoryname);
+  async writeJSONAndroid(filename, object) {
+    return new Promise<string>(async (resolve,rejected)=>{
+      object = JSON.stringify(object);
+    // let datadirectory=this.File.dataDirectory;
+    let directoryname = "StockfolioReports";
+    let extrootdirectory = this.File.externalRootDirectory;
+    let condition = await this.isCreated(extrootdirectory, directoryname);
     if (condition) {
-      await this.File.createFile(datadirectory+directoryname, filename, true).then(
-        (v) => {
-          console.log("file created!")
-          this.File.writeFile(datadirectory+directoryname, filename, object,{append:true}).then((s)=> {
-            // let f= this.isCreated(extrootdirectory,directoryname);
-            // if(f)
-            //  this.File.moveFile(v.fullPath,filename,extrootdirectory,directoryname);
-            console.log("file written!")
+      await this.File.createFile(extrootdirectory + directoryname, filename, true).then(
+        async (v) => {
+         await this.File.writeFile(extrootdirectory + directoryname, filename, object, { append: true }).then(s => {
+            resolve("File Written at '"+extrootdirectory + directoryname+"'");
           }, err => {
-            console.log("writeFile Error")
-            console.log(err)
-             }).catch(err=>{
-              this.File.writeFile(datadirectory+directoryname, filename, object).then((s)=> {
-               
-                console.log("file written!")
-              });
-             });
+            rejected("Error: Report can't be written.");
+          }).catch(async err => {
+            await this.File.writeFile(extrootdirectory + directoryname, filename, object).then(s => {
+              resolve("File Written at '"+extrootdirectory + directoryname+"'");
+            });
+          });
         },
-        err => { 
+        err => {
           console.log("createFile Error")
           console.log(err)
-         });
+          rejected("Error: Report can't be generated.");
+        });
     }
+    });
+    
   }
    writeJSONdesktop(object){
-    return new Promise<void>((resolve,reject)=>{
+    return new Promise<string>((resolve,reject)=>{
       var theJSON = JSON.stringify(object);
       var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
       this.downloadJsonHref = uri;
       if(this.downloadJsonHref!=(undefined&&null) ){
-        resolve();
+        resolve("Download link generated");
+      }else{
+        reject("Error: Download link can't be generated or passes object is null or undefined.");
       }
     });
-    
   }
 }

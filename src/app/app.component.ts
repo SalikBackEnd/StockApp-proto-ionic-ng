@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LocalService } from './services/local.service';
+import { StartupService } from './services/startup.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ export class AppComponent {
   public scriptsList=[];
   
   data:any;
-  constructor(public local:LocalService) {
+  constructor(public startup:StartupService,public local:LocalService) {
     
    }
   
