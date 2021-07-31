@@ -4,6 +4,8 @@ import { File } from '@ionic-native/file/ngx';
 import { Platform } from '@ionic/angular';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
+import { HelperService } from './helper.service';
+import { LocalService } from './local.service';
 
 
 
@@ -13,10 +15,30 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class ReportService {
   public currentPlatform:any=[];
   public downloadJsonHref:any;
-  constructor(private File:File,private platform:Platform,private fileChooser:FileChooser,private sanitizer:DomSanitizer) { 
+  
+  public Scripts: any = [];
+  public List: any = [];
+  public PnL = {
+    date: "",
+    Transactions: []
+  }
+  public transaction = {
+    scriptsname: "",
+    PnL: 0,
+    buyprice: 0,
+    sellprice: 0,
+    state: 0
+  }
+  constructor(
+    private File:File,
+    private platform:Platform,
+    private fileChooser:FileChooser,
+    private sanitizer:DomSanitizer,
+    private helper:HelperService,
+    private local:LocalService) { 
     this.currentPlatform=platform.platforms();
   } 
-  
+
   async isCreated(rootdirectory,directoryname){
     let created=true;
     console.log("In isCreated!")
@@ -88,5 +110,46 @@ export class ReportService {
         reject("Error: Download link can't be generated or passes object is null or undefined.");
       }
     });
+  }
+  PopulateProfitnLoss() {
+    this.Scripts = this.local.scriptlist;
+    let dates = this.helper.SoldDates();
+    if (dates.length > 0) {
+      dates = dates.reverse();
+      dates.forEach(e => {
+        this.PnL = {
+          date: "",
+          Transactions: []
+        }
+
+        let t = this.helper.getTransactionbyDate(e, this.local.SellList());
+        if (t.length > 0) {
+          t.forEach(ele => {
+            // let buyprice=this.helper.getBuyAvgPrice(ele.scriptid,ele.date);
+            let buyprice = this.helper.AverageCostbyTotalCost(ele.scriptid, ele.date);
+            let scriptname = this.helper.getScriptNameFromList(ele.scriptid, this.Scripts);
+            let sellprice = this.helper.ActualSellCostbyTotalCost(ele.quantity, ele.totalcost);
+            let pnlobj = this.helper.getProfitnLoss(ele.scriptid, buyprice, sellprice, ele.date);
+
+            this.transaction = {
+              scriptsname: scriptname,
+              PnL: parseFloat(pnlobj.amount.toFixed(2)),
+              buyprice: buyprice,
+              sellprice: sellprice,
+              state: pnlobj.pnlstate
+            };
+            this.PnL.Transactions.push(this.transaction);
+          });
+          this.PnL.Transactions = this.PnL.Transactions.reverse();
+        }
+        this.PnL.date = new Date(e).toDateString();
+        this.List.push(this.PnL);
+       
+      });
+      return this.List;
+    }
+    else{
+     return this.List;
+    }
   }
 }

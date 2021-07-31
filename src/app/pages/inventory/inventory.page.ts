@@ -25,7 +25,7 @@ export class InventoryPage implements OnInit {
     ProfitLoss:[],
     Transactions:[]
   } 
-  
+
   public List={
     scripts:[],
     shareCount:[],
@@ -131,10 +131,11 @@ export class InventoryPage implements OnInit {
     return await modal.present();
    }
   async GenerateReport() {
+    
     this.reportObject={
       Inventory:this.Scriptitem,
-      ProfitLoss:[],
-      Transactions:[]
+      ProfitLoss:this.report.PopulateProfitnLoss(),
+      Transactions:[{Buy:this.local.BuyList(),Sell:this.local.SellList()}]
     };
     let loader=this.loader.show("Generating Report...");
     if (this.isDownloadAvailable = true) {

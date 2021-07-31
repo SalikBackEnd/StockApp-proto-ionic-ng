@@ -19,14 +19,14 @@
       <ion-row>
         <ion-col size="12" class="ion-padding">
           <ion-item>
-            <ion-input type="number"  placeholder="Quantity" [value]="textQty" (input)="onQuantityInput($event.target.value)" required></ion-input>
+            <ion-input inputmode="decimal" type="number" pattern="[0-9]+" style="-webkit-text-security:disc" [value]="textQty" placeholder="Quantity" (input)="onQuantityInput($event.target.value)" required ></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="12" class="ion-padding">
             <ion-item>
-              <ion-input class="ion-text-right" type="number" [value]="textPrice" (input)="onAmountInput($event.target.value)" placeholder="Price" required></ion-input>
+              <ion-input class="ion-text-right" type="number" style="-webkit-text-security:disc" [value]="textPrice" (input)="onAmountInput($event.target.value)" placeholder="Price" required></ion-input>
             </ion-item>
         </ion-col>
       </ion-row>

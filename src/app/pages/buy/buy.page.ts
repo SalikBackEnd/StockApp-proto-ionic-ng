@@ -27,8 +27,8 @@ export class BuyPage implements OnInit {
     totalcost:0,
     statusid: 0
   }
-  textQty: number = null;
-  textPrice: number=null;
+  textQty: string = '';
+  textPrice: string='';
   Tax: any = false;
   public logList: any = [];
   public logarr = [];
