@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, SimpleChange } from '@angular/core';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { HelperService, TransactionType } from 'src/app/services/helper.service';
+import { HelperService, Tables, TransactionType } from 'src/app/services/helper.service';
 import { LocalService } from 'src/app/services/local.service';
 import { ToastService } from 'src/app/services/toast.service';
 
@@ -13,6 +13,7 @@ import { ToastService } from 'src/app/services/toast.service';
 export class LogsPage implements OnInit {
   public loglist: any = [];
   public logs = {
+    id:0,
     script: "",
     price: 0,
     qty: 0,
@@ -51,6 +52,7 @@ export class LogsPage implements OnInit {
         let date = new Date(buy.date).toISOString().substr(0,10);
         
         this.logs = {
+          id:buy.id,
           script: scriptname,
           price: parseFloat((buy.price).toFixed(2)),
           qty: buy.quantity,
@@ -111,5 +113,16 @@ export class LogsPage implements OnInit {
    this.TransctType.push({name:"All",value:TransactionType.Both,isSelected:true},
    {name:"Buy",value:TransactionType.Buy,isSelected:false},
    {name:"Sell",value:TransactionType.Sell,isSelected:false});
+  }
+  DeleteTransaction(id) {
+    if(this.loglist.length>0){
+      let newlog= this.loglist.filter(x=>x.id!=id);
+      this.loglist=newlog;
+      let list:any=[];
+      list=this.local.GetData(Tables.Transaction);
+      list=list.filter(x=>x.id!=id);
+      this.local.SetData(Tables.Transaction,list);
+      this.toast.show("Transaction Deleted!",500);
+    }
   }
 }

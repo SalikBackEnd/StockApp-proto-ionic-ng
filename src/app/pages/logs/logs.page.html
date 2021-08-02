@@ -62,13 +62,19 @@
   </ion-item>
 
   <ion-list>
-    <ion-item *ngFor="let log of loglist ">
-      <ion-label>{{log.script}}</ion-label>
-      <!-- <ion-label *ngIf="log.status == 1" color="warning">{{log.script}}</ion-label> -->
-      <ion-label>{{log.price}}</ion-label>
-      <ion-label>{{log.qty}}</ion-label>
-      <ion-badge *ngIf="log.status == 0" color="primary">{{log.date}}</ion-badge>
-      <ion-badge *ngIf="log.status == 1" color="success">{{log.date}}</ion-badge>
-    </ion-item>
+    <ion-item-sliding *ngFor="let log of loglist ">
+      <ion-item-options side="start">
+        <ion-item-option (click)="DeleteTransaction(log.id)" color="danger"><ion-icon slot="icon-only" name="trash-outline" color="light"></ion-icon></ion-item-option>
+      </ion-item-options>
+      <ion-item>
+        <ion-label>{{log.script}}</ion-label>
+        <!-- <ion-label *ngIf="log.status == 1" color="warning">{{log.script}}</ion-label> -->
+        <ion-label>{{log.price}}</ion-label>
+        <ion-label>{{log.qty}}</ion-label>
+        <ion-badge *ngIf="log.status == 0" color="primary">{{log.date}}</ion-badge>
+        <ion-badge *ngIf="log.status == 1" color="success">{{log.date}}</ion-badge>
+      </ion-item>
+    </ion-item-sliding>
+    
   </ion-list>
 </ion-content>
