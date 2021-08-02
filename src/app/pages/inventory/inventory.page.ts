@@ -9,6 +9,7 @@ import { LocalService } from 'src/app/services/local.service';
 import { ReportService } from 'src/app/services/report.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { LogsPage } from '../logs/logs.page';
+import { PayoutPage } from '../payout/payout.page';
 import { PnlPage } from '../pnl/pnl.page';
 import { ScriptsPage } from '../scripts/scripts.page';
 
@@ -128,6 +129,10 @@ export class InventoryPage implements OnInit {
    }
    async OpenScripts(){
     const modal=await this.modalcontroller.create({component:ScriptsPage});
+    return await modal.present();
+   }
+   async OpenPayout(){
+    const modal=await this.modalcontroller.create({component:PayoutPage});
     return await modal.present();
    }
   async GenerateReport() {

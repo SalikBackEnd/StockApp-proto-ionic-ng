@@ -8,6 +8,11 @@ export enum Platforms{
   Mobile=2,
   
 }
+export enum Payout{
+  Dividend=1,
+  Bonus=2
+}
+
 export enum TransactionType {
   Buy = 0,
   Sell = 1,
@@ -17,6 +22,7 @@ export enum TransactionType {
 export enum Tables {
   Transaction = "trnsctlog",
   FavScripts="favScripts",
+  Payout="payouts",
 }
 export enum PnL {
   Profit = 1,

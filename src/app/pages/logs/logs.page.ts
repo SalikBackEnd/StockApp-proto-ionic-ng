@@ -33,7 +33,12 @@ export class LogsPage implements OnInit {
   public maxDate=new Date(Date.now()).toISOString().substr(0,10);
   public minDate="2020-01-01";
   public selectedscriptid:string=null;
-  constructor(private local: LocalService, private loading:LoadingController,private toast: ToastService, private helper: HelperService, public viewCtrl: ModalController) {
+  constructor(
+    private local: LocalService,
+    private loading: LoadingController,
+    private toast: ToastService,
+    private helper: HelperService,
+    public viewCtrl: ModalController) {
     this.PopulateTypeSelect();
     this.LogList(this.togglevalue);
   }
