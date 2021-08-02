@@ -654,4 +654,7 @@ export class HelperService {
     }
     
   }
+  TotalCostbyScript(id){
+    return this.scriptTotalBuyCost(id)-this.scriptTotalSellCost(id);
+  }
 }

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
 
 
 import { TabBarPage } from './tab-bar.page';

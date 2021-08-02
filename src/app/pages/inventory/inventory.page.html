@@ -38,21 +38,36 @@
     <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>
-
+    
     <ion-fab vertical="top" horizontal="end" edge slot="fixed">
       <ion-fab-button>
         <ion-icon name="apps-outline"></ion-icon>
       </ion-fab-button>
       <ion-fab-list side="start">
-        <ion-fab-button (click)="OpenPayout()"><ion-icon name="cash-outline"></ion-icon></ion-fab-button>
-        <ion-fab-button (click)="OpenLogs()"><ion-icon name="receipt-outline"></ion-icon></ion-fab-button>
-        <ion-fab-button (click)="OpenPnL()" ><ion-icon name="bar-chart-outline"></ion-icon></ion-fab-button>
+        <ion-fab-button (click)="OpenPayout()">
+          Payout
+          <!-- <ion-icon md="cash-outline"></ion-icon> -->
+        </ion-fab-button>
+        <ion-fab-button (click)="OpenLogs()">
+          Logs
+          <!-- <ion-icon md="receipt-outline"></ion-icon> -->
+        </ion-fab-button> 
+        <ion-fab-button (click)="OpenPnL()" >
+          P/L
+          <!-- <ion-icon md="bar-chart-outline"></ion-icon> -->
+        </ion-fab-button>
       </ion-fab-list>
-      <ion-fab-list side="bottom">
-        <ion-fab-button (click)="OpenScripts()" ><ion-icon name="layers-outline"></ion-icon></ion-fab-button>
-        <ion-fab-button (click)="GenerateReport()" ><ion-icon name="print-outline"></ion-icon></ion-fab-button>
-        
+
+     <ion-fab-list side="bottom">
+        <ion-fab-button (click)="OpenScripts()" >
+          Scripts
+          <!-- <ion-icon md="layers-outline"></ion-icon> -->
+        </ion-fab-button>
+        <ion-fab-button (click)="GenerateReport()" >Download
+          <!-- <ion-icon md="print-outline"></ion-icon> -->
+        </ion-fab-button>
       </ion-fab-list>
     </ion-fab>
-    
+
+   
 </ion-content>

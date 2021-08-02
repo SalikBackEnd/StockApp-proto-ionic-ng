@@ -8,6 +8,8 @@ import { TabBarPageRoutingModule } from './tab-bar-routing.module';
 
 import { TabBarPage } from './tab-bar.page';
 
+
+
 @NgModule({
   imports: [
     CommonModule,
