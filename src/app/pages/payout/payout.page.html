@@ -40,14 +40,14 @@
       <ion-col size="12" *ngIf="dividendChecked">
         <ion-item>
           <ion-label>Dividend:</ion-label>
-          <ion-input #DividendField type="number" [(ngModel)]="textDividend" (ngModelChange)="onDividendEnter()" (input)="onInput($event.target.value)" placeholder="Enter here... "></ion-input>
+          <ion-input #DividendField type="number" [(ngModel)]="textDividend" (ngModelChange)="onDividendEnter()" (input)="onInputDividend($event.target.value)" placeholder="Enter here... "></ion-input>
           <ion-text>%</ion-text>
         </ion-item>
       </ion-col>
       <ion-col size="12" *ngIf="bonusChecked">
         <ion-item>
           <ion-label>Bonus:</ion-label>
-          <ion-input #BonusField type="number" [(ngModel)]="textBonus" (ngModelChange)="onBonusEnter()" placeholder="Enter here..."></ion-input>
+          <ion-input #BonusField type="number" [(ngModel)]="textBonus" (ngModelChange)="onBonusEnter()" (input)="onInputBonus($event.target.value)" placeholder="Enter here..."></ion-input>
           <ion-text>%</ion-text>
         </ion-item>
       </ion-col>
@@ -70,6 +70,13 @@
         <ion-item>
           <ion-label>{{bonusqty}}</ion-label>
         </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" class="ion-text-center">
+        <ion-button (click)="pay()">Payout</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
