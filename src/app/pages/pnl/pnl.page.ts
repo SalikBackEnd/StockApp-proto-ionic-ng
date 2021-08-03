@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { HelperService, PnL, Tables } from 'src/app/services/helper.service';
+import { HelperService, Payout, PnL, Tables } from 'src/app/services/helper.service';
 import { LocalService } from 'src/app/services/local.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { PayoutPageModule } from '../payout/payout.module';
 
 @Component({
   selector: 'app-pnl',
@@ -16,7 +17,8 @@ export class PnlPage implements OnInit {
   public List: any = [];
   public PnL = {
     date: "",
-    Transactions: []
+    Transactions: [],
+    Payouts:[]
   }
   public transaction = {
     scriptsname: "",
@@ -25,6 +27,14 @@ export class PnlPage implements OnInit {
     sellprice: 0,
     state: 0
   }
+  public payout={
+    scriptsname: "",
+    type:0,
+    tax:0,
+    percent:0,
+    amount:0,
+    typename:""
+  };
   public selectedScript = "";
   public resetscriptid: string = "";
   public isShowingAll = true;
@@ -45,15 +55,22 @@ export class PnlPage implements OnInit {
   Populate() {
     this.Scripts = this.local.scriptlist;
     let dates = this.helper.SoldDates();
+    let payoutdate=this.helper.PayoutDates();
+    if(payoutdate.length>0){
+      dates.concat(payoutdate);
+      dates=dates.filter(this.helper.onlyUnique);
+    }
     if (dates.length > 0) {
       dates = dates.reverse();
       dates.forEach(e => {
         this.PnL = {
           date: "",
-          Transactions: []
+          Transactions: [],
+          Payouts:[]
         }
 
         let t = this.helper.getTransactionbyDate(e, this.local.SellList());
+        let payouts=this.helper.getPayoutsbyDate(e,this.helper.PayoutList());
         if (t.length > 0) {
           t.forEach(ele => {
             // let buyprice=this.helper.getBuyAvgPrice(ele.scriptid,ele.date);
@@ -72,6 +89,25 @@ export class PnlPage implements OnInit {
             this.PnL.Transactions.push(this.transaction);
           });
           this.PnL.Transactions = this.PnL.Transactions.reverse();
+        }
+        if(payouts.length>0){
+          payouts.forEach(ele => {
+            let scriptname = this.helper.getScriptNameFromList(ele.scriptid, this.Scripts);
+            let type= ele.type;
+            let typename="";
+            if(type==Payout.Dividend) typename="Dividend";
+            if(type==Payout.Bonus) typename="Bonus";
+              this.payout={
+              scriptsname: scriptname,
+              amount: ele.Amount,
+              percent: ele.percent,
+              tax: ele.tax,
+              typename: typename,
+              type:ele.type
+            };
+            this.PnL.Payouts.push(this.payout);
+          });
+          this.PnL.Payouts=this.PnL.Payouts.reverse();
         }
         this.PnL.date = new Date(e).toDateString();
         this.List.push(this.PnL);
@@ -83,15 +119,22 @@ export class PnlPage implements OnInit {
     this.Scripts = this.local.scriptlist;
     this.List = [];
     let dates = this.helper.SoldDatesByScript(Scriptid,fromDate,toDate);
+    let payoutdate=this.helper.PayoutDates();
+    if(payoutdate.length>0){
+      dates.concat(payoutdate);
+      dates=dates.filter(this.helper.onlyUnique);
+    }
     if (dates.length > 0) {
       dates = dates.reverse();
       dates.forEach(e => {
         this.PnL = {
           date: "",
-          Transactions: []
+          Transactions: [],
+          Payouts:[]
         }
 
         let t = this.helper.getTransactionbyDate(e, this.local.scriptsSellList(Scriptid));
+        let payouts=this.helper.getPayoutsbyDate(e,this.helper.PayoutList());
         if (t.length > 0) {
           t.forEach(ele => {
             // let buyprice=this.helper.getBuyAvgPrice(ele.scriptid,ele.date);
@@ -110,6 +153,24 @@ export class PnlPage implements OnInit {
             this.PnL.Transactions.push(this.transaction);
           });
           this.PnL.Transactions = this.PnL.Transactions.reverse();
+        } if(payouts.length>0){
+          payouts.forEach(ele => {
+            let scriptname = this.helper.getScriptNameFromList(ele.scriptid, this.Scripts);
+            let type= ele.type;
+            let typename="";
+            if(type==Payout.Dividend) typename="Dividend";
+            if(type==Payout.Bonus) typename="Bonus";
+              this.payout={
+              scriptsname: scriptname,
+              amount: ele.Amount,
+              percent: ele.percent,
+              tax: ele.tax,
+              typename: typename,
+              type:ele.type
+            };
+            this.PnL.Payouts.push(this.payout);
+          });
+          this.PnL.Payouts=this.PnL.Payouts.reverse();
         }
         this.PnL.date = new Date(e).toDateString();
         this.List.push(this.PnL);

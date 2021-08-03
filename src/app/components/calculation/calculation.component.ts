@@ -141,39 +141,13 @@ export class CalculationComponent implements OnInit {
       this.NewQty=0;
     }
   }
- countShareswrtScript(scriptid){
+ countShareswrtScript(id){
   let buycount=0;
   let sellcount=0;
-  let key=Tables.Transaction;
-  let list=this.local.GetData(key);
-  if(scriptid != undefined && scriptid !=null){
-  if(list != undefined ){
-      //this.buyList=list.filter((e,i)=>{return e.id!="" && e.statusid== TransactionType.Buy && e.scriptid== scriptid});
-      //this.sellList=list.filter(e=>{return e.id!="" && e.statusid==TransactionType.Sell && e.scriptid== scriptid});
-      this.buyList=this.local.scriptsBuyList(scriptid);
-      this.sellList=this.local.scriptsSellList(scriptid);
-      if(this.buyList.length>0){
-        // let quantityobj=this.buyList.map(a=>a.quantity);
-        
-        // if(this.buyList.length>1)
-        // buycount=quantityobj.reduce((a,b)=>a+b,0);
-        // else if(this.buyList.length==1)
-        // buycount=quantityobj;
-        buycount=this.buyList.map(e=>e.quantity).reduce((a,b)=>a+(b||0));
-      }
-      if(this.sellList.length>0){
-        // let quantityobj=this.sellList.map(a=>a.quantity);
-        // if(this.sellList.length>1)
-        // sellcount=quantityobj.reduce((a,b)=>a+b,0);
-        // else if(this.sellList.length==1)
-        // sellcount=quantityobj;
-        sellcount=this.sellList.map(a=>a.quantity).reduce((a,b)=>a+(b||0),0);
-      }
-   
-      return (buycount-sellcount);
-    }else{
-      return 0;
-    }
+  if(id != undefined && id !=null){
+  buycount=this.helper.scriptsBuyQuantity(id);
+  sellcount=this.helper.scriptsSellQuantity(id);
+  return (buycount-sellcount);
   }else{
     return 0;
   }

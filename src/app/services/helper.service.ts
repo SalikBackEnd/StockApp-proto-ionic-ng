@@ -55,12 +55,12 @@ export class HelperService {
     if(list.length==0)
     list= this.local.scriptsBuyList(sid);
    // list = this.local.GetData(Tables.Transaction);
-      
+      let payoutqty=this.PayoutQuantitybyScript(sid);
     if (list != undefined) {
       filtered = list;
       if (filtered.length > 0) {
         let quantity = filtered.map(e => e.quantity).reduce((a, b) => a + (b || 0), 0);
-        return quantity;
+        return quantity+payoutqty;
       } else {
         return 0;
       }
@@ -185,6 +185,21 @@ export class HelperService {
     else
       return [];
   }
+  PayoutDates(){
+    let payout = this.PayoutList();
+    let date = payout.map(e => e.date);
+    let datestring = payout.map(e => new Date(e.date).toDateString());
+    date = datestring.filter(this.onlyUnique);
+    console.log("In Payout Dates Method");
+    console.log(datestring)
+    if (date.length > 0)
+      return date;
+    else
+      return [];
+  }
+  // PayoutDatesByScript(){
+
+  // }
   SoldDatesByScript(id,from:Date=null,to:Date=null) {
     let sell = this.ListSearch(TransactionType.Sell,from,to,id);
     if(sell.length>0){
@@ -290,6 +305,7 @@ export class HelperService {
   SellQuantitybyDatenScript(date, scriptid) {
     let list: any = [];
     list = this.local.GetData(Tables.Transaction);
+    
     if (list != undefined) {
       let filtered = list.filter(e => (e.id != "") && (e.statusid == TransactionType.Sell) && (e.scriptid == scriptid));
       filtered = filtered.filter(e => {
@@ -656,5 +672,44 @@ export class HelperService {
   }
   TotalCostbyScript(id){
     return this.scriptTotalBuyCost(id)-this.scriptTotalSellCost(id);
+  }
+  PayoutList(){
+    let list=this.local.GetData(Tables.Payout);
+    if(list!=null){
+      return list;
+    }else{
+      return [];
+    }
+  }
+  getPayoutsbyDate(date: Date, payoutlist: Array<any>) {
+    let d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    let list: any = [];
+   
+    if (payoutlist.length > 0) {
+      list = payoutlist.filter(e => {
+        let dt = new Date(e.date);
+        dt.setHours(0, 0, 0, 0);
+        if (d.toDateString() == dt.toDateString())
+          return true;
+        else
+          return false;
+      });
+    }
+    if (list != undefined && list.length > 0)
+      return list;
+    else
+      return [];
+  }
+  PayoutQuantitybyScript(id){
+    let list:any=[];
+    list=this.PayoutList();
+    if(list.length>0){
+      let filter=list.filter(x=>x.type==Payout.Bonus && x.scriptid==id)
+      let qty=filter.map(x=>x.Amount).reduce((a,b)=>a+(b||0),0);
+      return qty;
+    }else{
+      return 0;
+    }
   }
 }

@@ -51,6 +51,18 @@
           <ion-label *ngIf="j.state == 1" >{{j.PnL}}</ion-label>
           <ion-label *ngIf="j.state == 2" color="danger">( {{j.PnL}} )</ion-label>
         </ion-item>
+        <ion-item background-color="primary" >
+          <ion-label>Script</ion-label>
+          <ion-label>Payout</ion-label>
+          <ion-label>Percent</ion-label>
+          <ion-label>You Get</ion-label>
+        </ion-item>
+        <ion-item *ngFor="let p of i.Payouts">
+          <ion-label>{{p.scriptsname}}</ion-label>
+          <ion-label>{{p.typename}}</ion-label>
+          <ion-label>{{p.percent}} %</ion-label>
+          <ion-label>{{p.amount}}</ion-label>
+        </ion-item>
     </ion-item-group>
     
   </ion-list>
