@@ -1,3 +1,4 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonInput, LoadingController, ModalController } from '@ionic/angular';
 import { HelperService, Payout, Tables } from 'src/app/services/helper.service';
@@ -143,16 +144,23 @@ export class PayoutPage implements OnInit {
   }
   pay(){
       let list= this.populate();
+      if(list.length>0){
       this.local.SetData(Tables.Payout,list);
       this.toast.show("Successfully payout!",500);
       this.viewCtrl.dismiss({data:"refresh"});
+    }else{
+      this.toast.show("Enter dividend or bonus!")
+    }
+      
   }
   populate() {
     let list: any = [];
-    list=this.local.GetData(Tables.Payout);
-    let newid=0;
-    if (this.dividendChecked && this.dividendAmount >0 && this.textDividend>0) {
-      newid=this.local.GenerateId(Tables.Payout);
+    list = this.local.GetData(Tables.Payout);
+    let newid = 0;
+    let dividen = false;
+    let bonus = false;
+    if (this.dividendChecked && this.dividendAmount > 0 && this.textDividend > 0) {
+      newid = this.local.GenerateId(Tables.Payout);
       this.Payout = {
         id: newid,
         scriptid: this.selectedscriptid,
@@ -164,11 +172,12 @@ export class PayoutPage implements OnInit {
         date: Date.now()
       }
       list.push(this.Payout);
+      dividen = true;
     }
-    if (this.bonusChecked && this.bonusqty >0 && this.textBonus > 0) {
-      let id=this.local.GenerateId(Tables.Payout);
-      if(newid==id){
-        id=id+1;
+    if (this.bonusChecked && this.bonusqty > 0 && this.textBonus > 0) {
+      let id = this.local.GenerateId(Tables.Payout);
+      if (newid == id) {
+        id = id + 1;
       }
       this.Payout = {
         id: id,
@@ -181,7 +190,14 @@ export class PayoutPage implements OnInit {
         date: Date.now()
       }
       list.push(this.Payout);
+      bonus = true;
     }
-    return list;
+
+    if (dividen || bonus) {
+      return list;
+    } else {
+      return [];
+    }
+
   }
 }

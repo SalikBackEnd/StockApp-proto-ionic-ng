@@ -291,9 +291,17 @@ export class HelperService {
       return 0;
     }
   }
-  getProfitnLoss(scriptid, buyprice, sellprice, date) {
-    let buyamount = buyprice * this.SellQuantitybyDatenScript(date, scriptid);
-    let sellamount = sellprice * this.SellQuantitybyDatenScript(date, scriptid);
+  getProfitnLoss(scriptid, buyprice, sellprice, date=null) {
+    let buyamount=0;
+    let sellamount=0;
+    if(date==null){
+      buyamount=buyprice*this.scriptTotalQuantity(scriptid);
+      sellamount=sellprice*this.scriptTotalQuantity(scriptid);
+    }else{
+      buyamount = buyprice * this.SellQuantitybyDatenScript(date, scriptid);
+      sellamount = sellprice * this.SellQuantitybyDatenScript(date, scriptid);
+    }
+  
     let gained = sellamount - buyamount;
     if (gained < 0) {
       gained = buyamount - sellamount;

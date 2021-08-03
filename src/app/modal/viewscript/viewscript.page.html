@@ -55,4 +55,40 @@
       </ion-label>
     </ion-item>
   </ion-list>
+  <ion-grid>
+    <ion-text><h3>Unrealize P/L</h3></ion-text>
+   
+    <ion-row *ngIf="PLState == 1">
+      <ion-col size="6">
+        <ion-item>
+          <ion-label>Profit</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item >
+          <ion-label>{{PLAmount}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="PLState == 2">
+      <ion-col size="6">
+        <ion-item >
+          <ion-label>Loss</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item >
+          <ion-label color="danger">{{PLAmount}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-end">
+      <ion-col size="5">
+        <ion-item>
+          <ion-input class="ion-text-right ion-padding" type="number" [(ngModel)]="textCPrice" (ngModelChange)="onCPriceEnter()" (input)="onInputCPrice($event.target.value)" placeholder="Current Price"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    
+  </ion-grid>
 </ion-content>
