@@ -55,12 +55,13 @@ export class HelperService {
     if(list.length==0)
     list= this.local.scriptsBuyList(sid);
    // list = this.local.GetData(Tables.Transaction);
-      let payoutqty=this.PayoutQuantitybyScript(sid);
+      // let payoutqty=this.PayoutQuantitybyScript(sid);
     if (list != undefined) {
       filtered = list;
       if (filtered.length > 0) {
         let quantity = filtered.map(e => e.quantity).reduce((a, b) => a + (b || 0), 0);
-        return quantity+payoutqty;
+       // return quantity+payoutqty;
+       return quantity;
       } else {
         return 0;
       }

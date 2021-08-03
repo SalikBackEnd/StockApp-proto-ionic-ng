@@ -40,34 +40,52 @@
       <ion-col size="12" *ngIf="dividendChecked">
         <ion-item>
           <ion-label>Dividend:</ion-label>
-          <ion-input #DividendField type="number" [(ngModel)]="textDividend" (ngModelChange)="onDividendEnter()" (input)="onInputDividend($event.target.value)" placeholder="Enter here... "></ion-input>
-          <ion-text>%</ion-text>
+          <ion-input class="ion-text-right ion-padding" #DividendField type="number" [(ngModel)]="textDividend" (ngModelChange)="onDividendEnter()" (input)="onInputDividend($event.target.value)" placeholder="00"></ion-input>
+          <ion-text>(PKR)</ion-text>
         </ion-item>
       </ion-col>
       <ion-col size="12" *ngIf="bonusChecked">
         <ion-item>
           <ion-label>Bonus:</ion-label>
-          <ion-input #BonusField type="number" [(ngModel)]="textBonus" (ngModelChange)="onBonusEnter()" (input)="onInputBonus($event.target.value)" placeholder="Enter here..."></ion-input>
-          <ion-text>%</ion-text>
+          <ion-input class="ion-text-right ion-padding" #BonusField type="number" [(ngModel)]="textBonus" (ngModelChange)="onBonusEnter()" (input)="onInputBonus($event.target.value)" placeholder="00"></ion-input>
+          <ion-text>( % )</ion-text>
         </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
   <ion-grid>
-    <ion-row>
+    <ion-row *ngIf="dividendChecked">
       <ion-col size="6">
-        <ion-item>
-          <ion-label>Dividend Amount</ion-label>
+        <ion-item >
+          <ion-label>Total Dividend</ion-label>
         </ion-item>
         <ion-item>
+          <ion-label>Tax Deducted</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Received Amount</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item >
+          <ion-label>{{totaldividend}}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{taxamount}}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{dividendAmount}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="bonusChecked">
+      <ion-col size="6">
+        <ion-item >
           <ion-label>Bonus Qty</ion-label>
         </ion-item>
       </ion-col>
       <ion-col size="6">
-        <ion-item>
-          <ion-label>{{dividendAmount}}</ion-label>
-        </ion-item>
-        <ion-item>
+        <ion-item >
           <ion-label>{{bonusqty}}</ion-label>
         </ion-item>
       </ion-col>

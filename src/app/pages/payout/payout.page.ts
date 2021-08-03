@@ -31,6 +31,7 @@ export class PayoutPage implements OnInit {
   public textDividend:number=null;
   public textBonus:number=null;;
   public dividendAmount:number=0;
+  public totaldividend:number=0;
   public bonusqty:number=0;
   public tax:number=0;
   public taxamount:number=0;
@@ -59,8 +60,8 @@ export class PayoutPage implements OnInit {
   }
   
 
-  DividendAmount(CurrentAmount,dividendpercentage){
-    return (dividendpercentage/100)*(CurrentAmount/10);
+  DividendAmount(sharecount,dividend){
+    return (dividend)*(sharecount);
   }
   DividendTax(dividentAmount,taxpercentage){
     return dividentAmount*(taxpercentage/100);
@@ -83,14 +84,13 @@ export class PayoutPage implements OnInit {
     }
     this.onFilerChange();
   }
-
   onDividendEnter() {
    // percentage = parseInt(percentage);
     if (this.Validation(this.textDividend)) {
-      let currentamount = this.getAmountbyScript(this.selectedscriptid);
-      this.dividendAmount = this.DividendAmount(currentamount, this.textDividend);
-     this.taxamount = this.DividendTax(this.dividendAmount, this.tax);
-      this.dividendAmount = parseFloat((this.dividendAmount - this.taxamount).toFixed(3));
+      let currentamount = this.getSharesbyScript(this.selectedscriptid);
+      this.totaldividend = this.DividendAmount(currentamount, this.textDividend);
+      this.taxamount = this.DividendTax(this.totaldividend, this.tax);
+      this.dividendAmount = parseFloat((this.totaldividend - this.taxamount).toFixed(3));
     }else{
       this.textDividend=0;
     }
@@ -106,7 +106,7 @@ export class PayoutPage implements OnInit {
   }
 
   onInputDividend(value) {
-    if (this.selectedscriptid != (undefined || null)) {
+    if (this.selectedscriptid != undefined || this.selectedscriptid != null) {
       var reg = /^[0-9]\d*$/;
       if (!reg.test(value)) {
         this.textDividend = null;
@@ -118,7 +118,7 @@ export class PayoutPage implements OnInit {
     }
   }
   onInputBonus(value) {
-    if (this.selectedscriptid != (undefined || null)) {
+    if (this.selectedscriptid != undefined || this.selectedscriptid != null) {
       var reg = /^[0-9]\d*$/;
       if (!reg.test(value)) {
         this.textBonus = null;
@@ -145,11 +145,13 @@ export class PayoutPage implements OnInit {
       let list= this.populate();
       this.local.SetData(Tables.Payout,list);
       this.toast.show("Successfully payout!",500);
+      this.viewCtrl.dismiss({data:"refresh"});
   }
   populate() {
     let list: any = [];
+    list=this.local.GetData(Tables.Payout);
     let newid=0;
-    if (this.dividendChecked) {
+    if (this.dividendChecked && this.dividendAmount >0 && this.textDividend>0) {
       newid=this.local.GenerateId(Tables.Payout);
       this.Payout = {
         id: newid,
@@ -163,7 +165,7 @@ export class PayoutPage implements OnInit {
       }
       list.push(this.Payout);
     }
-    if (this.bonusChecked) {
+    if (this.bonusChecked && this.bonusqty >0 && this.textBonus > 0) {
       let id=this.local.GenerateId(Tables.Payout);
       if(newid==id){
         id=id+1;

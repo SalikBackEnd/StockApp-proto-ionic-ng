@@ -15,6 +15,8 @@ export class ViewscriptPage implements OnInit {
   rate=0;
   buyed=0;
   sold=0;
+  bonus=0;
+  totalCost=0;
   constructor(public navParam:NavParams,public viewCtrl:ModalController,public helper:HelperService) { 
     this.scriptName=navParam.get('scriptName');
     this.scriptid=navParam.get('scriptid')
@@ -30,6 +32,8 @@ export class ViewscriptPage implements OnInit {
     this.qty=this.helper.scriptTotalQuantity(id);
     this.rate=this.helper.AverageScriptCost(id);
     this.buyed=this.helper.scriptsBuyQuantity(id);
+    this.bonus=this.helper.PayoutQuantitybyScript(id);
     this.sold=this.helper.scriptsSellQuantity(id);
+    this.totalCost=this.helper.TotalCostbyScript(id);
   }
 }

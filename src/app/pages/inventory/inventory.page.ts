@@ -80,7 +80,8 @@ export class InventoryPage implements OnInit {
     
         let bQuantity=this.helper.scriptsBuyQuantity(el.id);
       let sQuantity=this.helper.scriptsSellQuantity(el.id);
-      let total=bQuantity-sQuantity;
+      let bonusQty=this.helper.PayoutQuantitybyScript(el.id);
+      let total=(bQuantity+bonusQty)-sQuantity;
       let avgcost=0;
       if(total != 0){
         //avgcost=this.helper.AverageScriptCost(el.id);
@@ -133,6 +134,9 @@ export class InventoryPage implements OnInit {
    }
    async OpenPayout(){
     const modal=await this.modalcontroller.create({component:PayoutPage});
+    modal.onDidDismiss().then(data=>{
+      this.ionViewWillEnter();
+     });
     return await modal.present();
    }
   async GenerateReport() {
