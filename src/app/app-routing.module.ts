@@ -56,6 +56,10 @@ const routes: Routes = [
     path: 'payout',
     loadChildren: () => import('./pages/payout/payout.module').then( m => m.PayoutPageModule)
   },
+  {
+    path: 'demopl',
+    loadChildren: () => import('./modal/demopl/demopl.module').then( m => m.DemoplPageModule)
+  },
 ];
 
 @NgModule({
