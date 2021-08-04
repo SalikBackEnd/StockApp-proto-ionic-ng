@@ -1,9 +1,105 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>demopl</ion-title>
+    <ion-buttons slot="start" (click)="Dismiss()">
+      <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>Unrealised Profit Loss</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card >
+    <ion-grid>
+      <ion-row>
+        <ion-col justify-content-center class="ion-padding">
+          <!--Script Combo Component-->
+          <app-scriptcombobox [sid]="resetscriptid" (scriptvalue)="receiveScriptid($event)"></app-scriptcombobox>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item>
+            <ion-input type="number" pattern="[0-9]+" [(ngModel)]="textqty" (ngModelChange)="onqtyChange()" placeholder="Quantity"
+              (input)="onQuantityInput($event.target.value)" required></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item>
+            <ion-input class="ion-text-right" type="number" [(ngModel)]="textprice" (ngModelChange)="onPriceChange()"
+              (input)="onPriceInput($event.target.value)" placeholder="Price" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
 
+  <ion-card *ngIf="PLState != 0" >
+    <ion-grid>
+      <ion-row *ngIf="PLState == 1">
+        <ion-col size="6">
+          <ion-item  color="success">
+           <ion-text>Profit</ion-text> 
+          </ion-item>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item>
+          <ion-text>{{PLAmount}}</ion-text>
+        </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="PLState == 2">
+        <ion-col size="6" >
+          <ion-item color="danger" >
+          <ion-text >Loss</ion-text> 
+        </ion-item>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item>
+            <ion-text color="danger">( {{PLAmount}} )</ion-text>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="PLState == 3">
+        <ion-col size="6" >
+          <ion-item color="secondary" >
+          <ion-text >Break-Even</ion-text> 
+        </ion-item>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item>
+            <ion-text color="medium">( {{PLAmount}} )</ion-text>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-card *ngIf="totalqty != 0">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item color="primary">
+            <ion-text>Current Avg Rate:</ion-text>
+          </ion-item>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item>
+            <ion-text>{{avgrate}}</ion-text>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item color="primary">
+            <ion-text>Current Quantity:</ion-text>
+          </ion-item>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item>
+            <ion-text>{{totalqty}}</ion-text>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
 </ion-content>

@@ -42,7 +42,7 @@ export class ViewscriptPage implements OnInit {
   ionViewWillEnter(){
     let id=parseInt(this.scriptid);
     this.bonus=this.helper.PayoutQuantitybyScript(id);
-    this.qty=this.helper.scriptTotalQuantity(id)+this.bonus;
+    this.qty=this.helper.scriptTotalQuantity(id);
     this.rate=this.helper.AverageScriptCost(id);
     this.buyed=this.helper.scriptsBuyQuantity(id);
     this.sold=this.helper.scriptsSellQuantity(id);

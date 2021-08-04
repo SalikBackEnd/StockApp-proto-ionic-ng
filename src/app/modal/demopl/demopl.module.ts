@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { DemoplPageRoutingModule } from './demopl-routing.module';
 
 import { DemoplPage } from './demopl.page';
+import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scriptcombobox.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { DemoplPage } from './demopl.page';
     IonicModule,
     DemoplPageRoutingModule
   ],
-  declarations: [DemoplPage]
+  declarations: [DemoplPage,ScriptcomboboxComponent]
 })
 export class DemoplPageModule {}

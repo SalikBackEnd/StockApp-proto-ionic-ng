@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController } from '@ionic/angular';
+import { DemoplPage } from 'src/app/modal/demopl/demopl.page';
 import { HelperService, Payout, PnL, Tables } from 'src/app/services/helper.service';
 import { LocalService } from 'src/app/services/local.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -225,5 +226,8 @@ export class PnlPage implements OnInit {
     this.PopulateWithParameter(this.selectedScript,this.fdate,this.tdate);
     //this.LogList(this.togglevalue,this.fdate,this.tdate);
   }
-
+  async OpenDemoPL(){
+    const modal=await this.viewCtrl.create({component:DemoplPage});
+    return await modal.present();
+  }
 }

@@ -58,20 +58,28 @@
     <ion-row>
       <ion-col size="12">
         <ion-card >
-          <ion-row *ngIf="PLState == 1" class="ion-text-center">
+          <ion-row *ngIf="PLState == 1">
             <ion-col size="6">
-                <ion-label><p style="font-size:20px;">Profit</p></ion-label>
+              <ion-item  color="success">
+               <ion-text>Profit</ion-text> 
+              </ion-item>
             </ion-col>
             <ion-col size="6">
-                <ion-label><p style="font-size:20px;">{{PLAmount}}</p></ion-label>
+              <ion-item>
+              <ion-text>{{PLAmount}}</ion-text>
+            </ion-item>
             </ion-col>
           </ion-row>
-          <ion-row *ngIf="PLState == 2" class="ion-text-center">
-            <ion-col size="6">
-                <ion-label><p style="font-size:20px;">Loss</p></ion-label>
+          <ion-row *ngIf="PLState == 2">
+            <ion-col size="6" >
+              <ion-item color="danger" >
+              <ion-text >Loss</ion-text> 
+            </ion-item>
             </ion-col>
             <ion-col size="6">
-                <ion-label color="danger"><p style="font-size:20px;">{{PLAmount}}</p></ion-label>
+              <ion-item>
+                <ion-text color="danger">( {{PLAmount}} )</ion-text>
+              </ion-item>
             </ion-col>
           </ion-row>
         </ion-card>

@@ -26,7 +26,8 @@ export enum Tables {
 }
 export enum PnL {
   Profit = 1,
-  Loss = 2
+  Loss = 2,
+  Break_Even=3
 }
 export enum DataTypes{
   Number="number",
@@ -339,6 +340,24 @@ export class HelperService {
       return { pnlstate: PnL.Loss, amount: gained }
     } else if (gained >= 0) {
       return { pnlstate: PnL.Profit, amount: gained };
+    }
+  }
+  getUnrealisedPL(avgrate,currentprice,currentqty){
+    if(currentqty<=0 || currentprice <= 0 || avgrate <=0){
+      return {pnlstate: 0, amount: 0};
+    }
+    let buyamount=avgrate*currentqty;
+    let sellamount=currentprice*currentqty;
+    let gained=sellamount-buyamount;
+    if(gained<0){
+      gained=buyamount-sellamount;
+      gained=parseFloat(gained.toFixed(2));
+      return { pnlstate: PnL.Loss, amount: gained }
+    } else if(gained>0){
+      gained=parseFloat(gained.toFixed(2));
+      return { pnlstate: PnL.Profit, amount: gained }
+    }else if(gained == 0){
+      return {pnlstate:PnL.Break_Even,amount:gained}
     }
   }
   SellQuantitybyDatenScript(date, scriptid) {
