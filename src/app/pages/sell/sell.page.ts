@@ -103,9 +103,9 @@ export class SellPage implements OnInit {
       let list = this.local.GetData(key);
       if (list != undefined) {
         // this.buyList=list.filter((e,i)=>{return e.id!="" && e.statusid== TransactionType.Buy && e.scriptid==scriptid});
-        this.buyList = this.local.scriptsBuyList(scriptid);
+        // this.buyList = this.local.scriptsBuyList(scriptid);
         // this.sellList=list.filter(e=>{return e.id!="" && e.statusid==TransactionType.Sell && e.scriptid==scriptid});
-        this.sellList = this.local.scriptsSellList(scriptid);
+        // this.sellList = this.local.scriptsSellList(scriptid);
         // if(this.buyList.length>0){
         //   buyQuantity=this.buyList.map(a=>a.quantity);
         //   buyprice=this.buyList.map(a=>a.price);
@@ -116,28 +116,28 @@ export class SellPage implements OnInit {
         //   sellprice=this.sellList.map(a=>a.price);
         // }
 
-        if (this.buyList.length > 0) {
-          buyQuantity = this.buyList.map(a => a.quantity).reduce((a, b) => a + b, 0);
-          buyprice = this.buyList.map(a => a.price).reduce((a, b) => a + b, 0);
-          buyAmount = buyQuantity * buyprice;
-          buyTotal = buyQuantity;
-        }
-        // else if(this.buyList.length==1){
-        //   buyAmount=buyQuantity*buyprice;
-        //   buyTotal=buyQuantity;
+        // if (this.buyList.length > 0) {
+        //   buyQuantity = this.buyList.map(a => a.quantity).reduce((a, b) => a + b, 0);
+        //   buyprice = this.buyList.map(a => a.price).reduce((a, b) => a + b, 0);
+        //   buyAmount = buyQuantity * buyprice;
+        //   buyTotal = buyQuantity;
         // }
-        if (this.sellList.length > 0) {
-          sellQuantity = this.sellList.map(a => a.quantity).reduce((a, b) => a + (b || 0), 0);
-          sellprice = this.sellList.map(a => a.price).reduce((a, b) => a + (b || 0), 0);
-          sellAmount = sellQuantity * sellprice;
-          sellTotal = sellQuantity;
-        }
+        // // else if(this.buyList.length==1){
+        // //   buyAmount=buyQuantity*buyprice;
+        // //   buyTotal=buyQuantity;
+        // // }
+        // if (this.sellList.length > 0) {
+        //   sellQuantity = this.sellList.map(a => a.quantity).reduce((a, b) => a + (b || 0), 0);
+        //   sellprice = this.sellList.map(a => a.price).reduce((a, b) => a + (b || 0), 0);
+        //   sellAmount = sellQuantity * sellprice;
+        //   sellTotal = sellQuantity;
+        // }
         // else if(this.sellList.length==1){
         //   sellAmount=sellQuantity*sellprice;
         //   sellTotal=sellQuantity;
         // }
-        totalAmount = buyAmount - sellAmount;
-        totalQunatity = buyTotal - sellTotal;
+        totalAmount = this.helper.scriptTotalAmount(scriptid);
+        totalQunatity = this.helper.scriptTotalQuantity(scriptid);
         if (this.Trans.quantity > totalQunatity) {
           this.toast.show("Not enough qunatity in inventory.");
           return;

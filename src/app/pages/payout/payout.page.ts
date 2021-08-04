@@ -76,7 +76,12 @@ export class PayoutPage implements OnInit {
   getAmountbyScript(id){
     return this.helper.TotalCostbyScript(id);
   }
-
+  getBonusSharebyScript(id){
+    return this.helper.PayoutQuantitybyScript(this.selectedscriptid);
+  }
+  getTotalSharesbyScript(id){
+    return this.helper.scriptTotalQuantity(id);
+  }
   onFilerCheck(){
     if(this.isFiler){
       this.tax=15;
@@ -86,10 +91,10 @@ export class PayoutPage implements OnInit {
     this.onFilerChange();
   }
   onDividendEnter() {
-   // percentage = parseInt(percentage);
+    let id= this.selectedscriptid;
     if (this.Validation(this.textDividend)) {
-      let currentamount = this.getSharesbyScript(this.selectedscriptid);
-      this.totaldividend = this.DividendAmount(currentamount, this.textDividend);
+      let totalshares = this.getTotalSharesbyScript(id);
+      this.totaldividend = this.DividendAmount(totalshares, this.textDividend);
       this.taxamount = this.DividendTax(this.totaldividend, this.tax);
       this.dividendAmount = parseFloat((this.totaldividend - this.taxamount).toFixed(3));
     }else{
@@ -97,9 +102,9 @@ export class PayoutPage implements OnInit {
     }
   }
   onBonusEnter() {
-   // percentage = parseInt(percentage);
+    let id= this.selectedscriptid;
     if (this.Validation(this.textBonus)) {
-      let currentShare = this.getSharesbyScript(this.selectedscriptid);
+      let currentShare = this.getSharesbyScript(id)+this.getBonusSharebyScript(id);
       this.bonusqty = this.BonusQty(currentShare, this.textBonus);
     }else{
       this.textBonus=0;

@@ -78,10 +78,11 @@ export class InventoryPage implements OnInit {
     let scripts=this.scriptList;
     scripts.forEach(el => {
     
-        let bQuantity=this.helper.scriptsBuyQuantity(el.id);
-      let sQuantity=this.helper.scriptsSellQuantity(el.id);
-      let bonusQty=this.helper.PayoutQuantitybyScript(el.id);
-      let total=(bQuantity+bonusQty)-sQuantity;
+      //   let bQuantity=this.helper.scriptsBuyQuantity(el.id);
+      // let sQuantity=this.helper.scriptsSellQuantity(el.id);
+      // let bonusQty=this.helper.PayoutQuantitybyScript(el.id);
+     // let total=(bQuantity+bonusQty)-sQuantity;
+     let total = this.helper.scriptTotalQuantity(el.id);
       let avgcost=0;
       if(total != 0){
         //avgcost=this.helper.AverageScriptCost(el.id);

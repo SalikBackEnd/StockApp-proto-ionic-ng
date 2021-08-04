@@ -102,27 +102,29 @@ export class HelperService {
     let sAList: any = [];
     let bAmount = 0;
     let sAmount = 0;
-    buylist = this.local.scriptsBuyList(id);
-    selllist = this.local.scriptsSellList(id);
-    if (buylist.length > 0) {
-      buylist.forEach(e => {
-        let amount = e.price * e.quantity;
-        bAList.push(amount);
-        console.log("Buy= Price into Quantity of scriptId:" + id)
-        console.log(amount)
-      });
-      if (bAList.length > 0) {
-        bAmount = bAList.reduce((a, b) => a + (b || 0), 0);
-      }
-    }
-    if (selllist.length > 0) {
-      selllist.forEach(e => {
-        sAList.push(e.price * e.quantity);
-      });
-      if (sAList.length > 0) {
-        sAmount = sAList.reduce((a, b) => a + (b || 0), 0);
-      }
-    }
+    // buylist = this.local.scriptsBuyList(id);
+    // selllist = this.local.scriptsSellList(id);
+    // if (buylist.length > 0) {
+    //   buylist.forEach(e => {
+    //     let amount = e.price * e.quantity;
+    //     bAList.push(amount);
+    //     console.log("Buy= Price into Quantity of scriptId:" + id)
+    //     console.log(amount)
+    //   });
+    //   if (bAList.length > 0) {
+    //     bAmount = bAList.reduce((a, b) => a + (b || 0), 0);
+    //   }
+    // }
+    // if (selllist.length > 0) {
+    //   selllist.forEach(e => {
+    //     sAList.push(e.price * e.quantity);
+    //   });
+    //   if (sAList.length > 0) {
+    //     sAmount = sAList.reduce((a, b) => a + (b || 0), 0);
+    //   }
+    // }
+    bAmount = this.scriptTotalBuyAmount(id);
+    sAmount = this.scriptTotalSellAmount(id);
     let tAmount = bAmount - sAmount;
     if (tAmount < 0)
       tAmount = sAmount - bAmount;
@@ -148,25 +150,53 @@ export class HelperService {
         bAmount = bAList.reduce((a, b) => a + (b || 0), 0);
       }
     }
-   
     let tAmount = bAmount ;
+    return tAmount;
+  }
+  scriptTotalSellAmount(id) {
+    let selllist: any = [];
+    let sAList: any = [];
+    let sAmount = 0;
+    selllist = this.local.scriptsSellList(id);
+    if (selllist.length > 0) {
+      selllist.forEach(e => {
+        let amount = e.price * e.quantity;
+        sAList.push(amount);
+        console.log("Sell= Price into Quantity of scriptId:" + id)
+        console.log(amount)
+      });
+      if (sAList.length > 0) {
+        sAmount = sAList.reduce((a, b) => a + (b || 0), 0);
+      }
+    }
+    let tAmount = sAmount ;
     return tAmount;
   }
   scriptTotalQuantity(scriptid) {
     let buycount = 0;
     let sellcount = 0;
+    if(scriptid == undefined || scriptid == null || scriptid == ""){
+      return 0;
+    }
     buycount = this.scriptsBuyQuantity(scriptid);
     sellcount = this.scriptsSellQuantity(scriptid);
-
-    return (buycount - sellcount);
+    let bonuscount=this.PayoutQuantitybyScript(scriptid);
+    let count=buycount+bonuscount;
+    return (count - sellcount);
   }
   scriptTotalBuyQuantity(scriptid) {
     let buycount = 0;
+    if(scriptid == undefined || scriptid == null || scriptid == ""){
+      return 0;
+    }
     buycount = this.scriptsBuyQuantity(scriptid);
     return (buycount);
   }
   scriptTotalSellQuantity(scriptid) {
     let buycount = 0;
+    if(scriptid == undefined || scriptid == null || scriptid == ""){
+      return 0;
+    }
     buycount = this.scriptsSellQuantity(scriptid);
     return (buycount);
   }
@@ -711,6 +741,9 @@ export class HelperService {
       return [];
   }
   PayoutQuantitybyScript(id){
+    if(id == undefined || id == null || id == ""){
+      return 0;
+    }
     let list:any=[];
     list=this.PayoutList();
     if(list.length>0){

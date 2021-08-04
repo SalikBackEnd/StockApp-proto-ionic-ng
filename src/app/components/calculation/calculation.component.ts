@@ -64,7 +64,7 @@ export class CalculationComponent implements OnInit {
     }
     if (changes['scriptid']) {
       if (this.page == 'sell' || this.page == 'demo-buy') {
-        this.Sharecount = this.countShareswrtScript(this.scriptid);
+        this.Sharecount = this.helper.scriptTotalQuantity(this.scriptid);
         if (this.sQuantity > 0 && this.sQuantity != undefined)
           this.NewQty = this.Sharecount + this.sQuantity;
         if (this.scriptid > 0 && this.scriptid != null && this.scriptid != undefined)
@@ -141,17 +141,17 @@ export class CalculationComponent implements OnInit {
       this.NewQty=0;
     }
   }
- countShareswrtScript(id){
-  let buycount=0;
-  let sellcount=0;
-  if(id != undefined && id !=null){
-  buycount=this.helper.scriptsBuyQuantity(id);
-  sellcount=this.helper.scriptsSellQuantity(id);
-  return (buycount-sellcount);
-  }else{
-    return 0;
-  }
- }
+//  countShareswrtScript(id){
+//   let buycount=0;
+//   let sellcount=0;
+//   if(id != undefined && id !=null){
+//   buycount=this.helper.scriptsBuyQuantity(id);
+//   sellcount=this.helper.scriptsSellQuantity(id);
+//   return (buycount-sellcount);
+//   }else{
+//     return 0;
+//   }
+//  }
 //  AverageShareCost(){
 //   let totalShare=this.local.countTotalShares();
 //   let totalAmount=this.local.totalAmount();
