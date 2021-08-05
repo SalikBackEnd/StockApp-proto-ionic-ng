@@ -92,8 +92,6 @@ public resetscript:boolean=false;
       loading.onDidDismiss().then(() => {
         this.toast.show("Transaction done successfully!");
         this.resetscript=true;
-      }).then(()=>{
-        this.resetscript=false;
       });
 
     }

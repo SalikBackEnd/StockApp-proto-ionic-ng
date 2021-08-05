@@ -221,8 +221,6 @@ export class SellPage implements OnInit {
       await loading.onDidDismiss().then(() => {
         this.toast.show("Transaction done successfully!");
         this.resetscript=true;
-      }).then(()=>{
-        this.resetscript=false;
       });
     } else {
       loading.dismiss();
