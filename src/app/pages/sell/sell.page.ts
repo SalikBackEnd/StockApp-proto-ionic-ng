@@ -39,7 +39,7 @@ export class SellPage implements OnInit {
   tax: number=0;
   comission: number=0;
   totalcost: number=0;
-  resetscriptid:string="";
+  public resetscript:boolean=false;
   constructor(public local: LocalService, public toast: ToastService, public helper: HelperService, public loadingController: LoadingController) {
     // this.addScriptstoSelect();
   }
@@ -220,7 +220,9 @@ export class SellPage implements OnInit {
       this.ResetFields();
       await loading.onDidDismiss().then(() => {
         this.toast.show("Transaction done successfully!");
-        this.resetscriptid=null;
+        this.resetscript=true;
+      }).then(()=>{
+        this.resetscript=false;
       });
     } else {
       loading.dismiss();

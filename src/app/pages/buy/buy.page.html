@@ -9,7 +9,10 @@
     <ion-grid >
       <ion-row>
         <ion-col justify-content-center class="ion-padding">
-            <app-scriptcombobox [sid]="resetscriptid" (scriptvalue)="receiveScriptid($event)"></app-scriptcombobox>
+            <!-- <app-scriptcombobox [sid]="resetscriptid" (scriptvalue)="receiveScriptid($event)"></app-scriptcombobox> -->
+            <ion-item>
+              <app-scriptselect [reset]="resetscript" (emitid)="receiveScriptid($event)" ></app-scriptselect>
+            </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>

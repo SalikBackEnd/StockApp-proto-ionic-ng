@@ -7,7 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { PayoutPageRoutingModule } from './payout-routing.module';
 
 import { PayoutPage } from './payout.page';
-import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scriptcombobox.component';
+
+import { ScriptselectComponent } from 'src/app/components/scriptselect/scriptselect.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scrip
     IonicModule,
     PayoutPageRoutingModule
   ],
-  declarations: [PayoutPage,ScriptcomboboxComponent]
+  declarations: [PayoutPage,ScriptselectComponent]
 })
 export class PayoutPageModule {}

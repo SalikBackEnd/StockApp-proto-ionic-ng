@@ -45,6 +45,9 @@ export class PnlPage implements OnInit {
   public minDate="2020-01-01";
   public fdate:Date=null;
   public tdate:Date=null;
+
+  public resetscript:boolean=false;
+
   constructor(public local: LocalService, public helper: HelperService, public toast: ToastService, public loadingController: LoadingController, public viewCtrl: ModalController) {
 
     this.Populate();

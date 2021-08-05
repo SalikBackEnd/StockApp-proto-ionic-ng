@@ -26,9 +26,12 @@ export class ScriptselectComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges){
-    if(changes['reset'])[
-      
-    ]
+    if (changes['reset']) {
+      if (this.reset = true) {
+        this.name="";
+        this.id="";
+      }
+    }
   }
   ngOnInit() {}
   async OpenScripList(){

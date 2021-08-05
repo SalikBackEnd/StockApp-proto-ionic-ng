@@ -12,7 +12,10 @@
   <ion-grid fixed>
     <ion-row>
       <ion-col size="6">
-        <app-scriptcombobox [sid]="resetscriptid" (scriptvalue)="receiveScriptid($event)"></app-scriptcombobox>
+        <!-- <app-scriptcombobox [sid]="resetscriptid" (scriptvalue)="receiveScriptid($event)"></app-scriptcombobox> -->
+        <ion-item>
+          <app-scriptselect [reset]="resetscript" (emitid)="receiveScriptid($event)" ></app-scriptselect>
+        </ion-item>
       </ion-col>
       <ion-col size="6">
         <ion-button (click)="showAll()" expand="block" fill="clear" shape="round">

@@ -8,7 +8,7 @@ import { LogsPageRoutingModule } from './logs-routing.module';
 
 import { LogsPage } from './logs.page';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scriptcombobox.component';
+import { ScriptselectComponent } from 'src/app/components/scriptselect/scriptselect.component';
 
 
 @NgModule({
@@ -19,6 +19,6 @@ import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scrip
     LogsPageRoutingModule,
     Ng2SearchPipeModule
   ],
-  declarations: [LogsPage,ScriptcomboboxComponent]
+  declarations: [LogsPage,ScriptselectComponent]
 })
 export class LogsPageModule {}

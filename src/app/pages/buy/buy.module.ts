@@ -8,7 +8,8 @@ import { BuyPageRoutingModule } from './buy-routing.module';
 
 import { BuyPage } from './buy.page';
 import { CalculationComponent } from 'src/app/components/calculation/calculation.component';
-import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scriptcombobox.component';
+
+import { ScriptselectComponent } from 'src/app/components/scriptselect/scriptselect.component';
 
 
 
@@ -19,6 +20,6 @@ import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scrip
     IonicModule,
     BuyPageRoutingModule
   ],
-  declarations: [BuyPage,CalculationComponent,ScriptcomboboxComponent]
+  declarations: [BuyPage,CalculationComponent,ScriptselectComponent]
 })
 export class BuyPageModule {}

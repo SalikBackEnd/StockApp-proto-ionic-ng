@@ -56,7 +56,7 @@ export class InventoryPage implements OnInit {
 
   public isDownloadAvailable=false;
 
-  public selectedScriptid:string="";
+  // public selectedScriptid:string="";
 
   constructor(public local:LocalService,public toast:ToastService,private loader:LoaderService,public helper:HelperService,public modalcontroller:ModalController,public report:ReportService) { 
     this.scriptList=local.scriptlist;
@@ -196,10 +196,10 @@ export class InventoryPage implements OnInit {
     }
     this.isDownloadAvailable=true;
   }
-  recieveScriptId(id){
-    this.selectedScriptid=id;
-    console.log("Receive id="+id);
-  }
+  // recieveScriptId(id){
+  //   this.selectedScriptid=id;
+  //   console.log("Receive id="+id);
+  // }
   //  doInfinite(event){
   //   console.log('Begin async operation');
   //     setTimeout(()=>{

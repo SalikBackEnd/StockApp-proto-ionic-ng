@@ -8,7 +8,8 @@ import { SellPageRoutingModule } from './sell-routing.module';
 
 import { SellPage } from './sell.page';
 import { CalculationComponent } from 'src/app/components/calculation/calculation.component';
-import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scriptcombobox.component';
+
+import { ScriptselectComponent } from 'src/app/components/scriptselect/scriptselect.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scrip
     IonicModule,
     SellPageRoutingModule
   ],
-  declarations: [SellPage,CalculationComponent,ScriptcomboboxComponent]
+  declarations: [SellPage,CalculationComponent,ScriptselectComponent]
 })
 export class SellPageModule {}

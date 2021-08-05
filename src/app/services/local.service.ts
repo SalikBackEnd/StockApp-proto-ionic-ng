@@ -200,7 +200,6 @@ export class LocalService {
        });
        this.SetData(Tables.FavScripts,favarr);
     }
-    
   }
   
 }

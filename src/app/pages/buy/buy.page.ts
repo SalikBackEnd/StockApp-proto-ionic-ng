@@ -41,7 +41,8 @@ export class BuyPage implements OnInit {
   public tax=0;
   public comission=0;
 
-public resetscriptid:string="";
+public resetscript:boolean=false;
+
 @ViewChild(ScriptcomboboxComponent) Scriptcombox:ScriptcomboboxComponent;
   constructor(public local: LocalService,public helper:HelperService, public toast: ToastService, public loadingController: LoadingController,public modalController:ModalController) {
     // this.addScriptstoSelect();
@@ -90,7 +91,9 @@ public resetscriptid:string="";
       this.ResetFields();
       loading.onDidDismiss().then(() => {
         this.toast.show("Transaction done successfully!");
-        this.resetscriptid=null;
+        this.resetscript=true;
+      }).then(()=>{
+        this.resetscript=false;
       });
 
     }

@@ -7,7 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { PnlPageRoutingModule } from './pnl-routing.module';
 
 import { PnlPage } from './pnl.page';
-import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scriptcombobox.component';
+
+import { ScriptselectComponent } from 'src/app/components/scriptselect/scriptselect.component';
 
 
 @NgModule({
@@ -17,6 +18,6 @@ import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scrip
     IonicModule,
     PnlPageRoutingModule
   ],
-  declarations: [PnlPage,ScriptcomboboxComponent]
+  declarations: [PnlPage,ScriptselectComponent]
 })
 export class PnlPageModule {}
