@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { HelperService } from 'src/app/services/helper.service';
 import { LocalService } from 'src/app/services/local.service';
 
 @Component({
@@ -16,9 +17,10 @@ export class ScriptlistPage implements OnInit {
   public end=this.limit-1;
   constructor(
     public local:LocalService,
+    public helper:HelperService,
     public viewCrtl:ModalController
   ) { 
-    this.Scripts=local.scriptlist;
+    this.Scripts=helper.favScriptList;
     this.List=this.Scripts.slice(this.start,this.end);
     this.start=this.end;
     this.end+=this.limit;
