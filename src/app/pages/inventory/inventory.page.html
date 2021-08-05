@@ -5,6 +5,11 @@
 </ion-header>
 
 <ion-content>
+  <ion-row>
+    <ion-col>
+      <app-scriptselect (emitid)="recieveScriptId($event)" ></app-scriptselect>
+    </ion-col>
+  </ion-row>
   <ion-row class="ion-justify-content-center">
     <ion-col size="12" class="self-align-item-center ion-text-center">
       <!-- <ion-button (click)="OpenPnL()">Profit & Loss</ion-button>

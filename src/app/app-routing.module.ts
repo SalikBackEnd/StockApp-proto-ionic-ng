@@ -60,6 +60,10 @@ const routes: Routes = [
     path: 'demopl',
     loadChildren: () => import('./modal/demopl/demopl.module').then( m => m.DemoplPageModule)
   },
+  {
+    path: 'scriptlist',
+    loadChildren: () => import('./modal/scriptlist/scriptlist.module').then( m => m.ScriptlistPageModule)
+  },
 ];
 
 @NgModule({

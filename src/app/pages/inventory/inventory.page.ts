@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { ModalController } from '@ionic/angular';
+import { ScriptselectComponent } from 'src/app/components/scriptselect/scriptselect.component';
 import { ViewscriptPage } from 'src/app/modal/viewscript/viewscript.page';
 import { HelperService, Platforms, Tables } from 'src/app/services/helper.service';
 import { LoaderService } from 'src/app/services/loader.service';
@@ -54,6 +55,8 @@ export class InventoryPage implements OnInit {
   public timestamp:any= Date.now();
 
   public isDownloadAvailable=false;
+
+  public selectedScriptid:string="";
 
   constructor(public local:LocalService,public toast:ToastService,private loader:LoaderService,public helper:HelperService,public modalcontroller:ModalController,public report:ReportService) { 
     this.scriptList=local.scriptlist;
@@ -140,6 +143,7 @@ export class InventoryPage implements OnInit {
      });
     return await modal.present();
    }
+  
   async GenerateReport() {
     
     this.reportObject={
@@ -191,6 +195,10 @@ export class InventoryPage implements OnInit {
      this.isDownloadAvailable=false;
     }
     this.isDownloadAvailable=true;
+  }
+  recieveScriptId(id){
+    this.selectedScriptid=id;
+    console.log("Receive id="+id);
   }
   //  doInfinite(event){
   //   console.log('Begin async operation');

@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { InventoryPageRoutingModule } from './inventory-routing.module';
+import { ScriptlistPageRoutingModule } from './scriptlist-routing.module';
 
-import { InventoryPage } from './inventory.page';
+import { ScriptlistPage } from './scriptlist.page';
 import { ScriptselectComponent } from 'src/app/components/scriptselect/scriptselect.component';
 
 @NgModule({
@@ -14,8 +14,8 @@ import { ScriptselectComponent } from 'src/app/components/scriptselect/scriptsel
     CommonModule,
     FormsModule,
     IonicModule,
-    InventoryPageRoutingModule
+    ScriptlistPageRoutingModule
   ],
-  declarations: [InventoryPage,ScriptselectComponent]
+  declarations: [ScriptlistPage,ScriptselectComponent]
 })
-export class InventoryPageModule {}
+export class ScriptlistPageModule {}
