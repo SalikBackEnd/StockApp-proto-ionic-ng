@@ -229,8 +229,5 @@ export class PnlPage implements OnInit {
     this.PopulateWithParameter(this.selectedScript,this.fdate,this.tdate);
     //this.LogList(this.togglevalue,this.fdate,this.tdate);
   }
-  async OpenDemoPL(){
-    const modal=await this.viewCtrl.create({component:DemoplPage});
-    return await modal.present();
-  }
+  
 }

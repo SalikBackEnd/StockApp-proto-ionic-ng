@@ -26,6 +26,7 @@ export class DemoplPage implements OnInit {
   
 
   public selectedScript = "";
+  public resetscript=false;
 
   constructor(
     public local:LocalService,
@@ -37,6 +38,9 @@ export class DemoplPage implements OnInit {
    }
 
   ngOnInit() {
+  }
+ async Dismiss(){
+    await this.viewCtrl.dismiss();
   }
   receiveScriptid(id){
     this.selectedScript=id;

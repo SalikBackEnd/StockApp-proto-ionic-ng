@@ -19,9 +19,11 @@ export class LocalService {
   public objfavscripts:any={
     id:"",name:"",fav:false
     };
+  
+    public isdarkmode:boolean=false;
   constructor(public http: HttpClient) { 
     this.GetScriptsList();
-   
+   this.isDarkMode();
     
   }
 
@@ -200,6 +202,16 @@ export class LocalService {
        });
        this.SetData(Tables.FavScripts,favarr);
     }
+  }
+  isDarkMode(){
+    let darkmode=this.GetData(Tables.Darkmode);
+    if(darkmode !=undefined){
+      this.isdarkmode=darkmode;
+      if(darkmode){
+        document.body.setAttribute('data-theme', 'dark');
+      }
+    }
+    
   }
   
 }

@@ -14,7 +14,7 @@ import { ToastService } from 'src/app/services/toast.service';
 export class DemocalculationPage implements OnInit {
 
   public page:string="demo-buy";
-  public resetscriptid:string="";
+  public resetscript:boolean=false;
   public selectedScript:string="0";
   textQty: string = '';
   textPrice: string = '';

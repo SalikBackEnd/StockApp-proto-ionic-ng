@@ -13,6 +13,12 @@ import { ToastService } from 'src/app/services/toast.service';
 export class ScriptsPage implements OnInit {
 
   public scripts:any=[];
+  public list:any=[];
+
+  public limit:number=20;
+  public start:number=0;
+  public end:number=this.limit-1;
+
   public objfavscripts:any={
     id:"",name:"",fav:false
     };
@@ -31,6 +37,9 @@ export class ScriptsPage implements OnInit {
     favScripts= this.local.GetData(Tables.FavScripts);
     if(favScripts!=undefined && favScripts.length>0){
       this.scripts=this.helper.SortHelper(favScripts,DataTypes.Boolean); //return a sorted list of array with true values first
+      this.list=this.scripts.slice(this.start,this.end);
+      this.start=this.end;
+      this.end+=this.limit;
     }else{
       this.scripts= [];
     }
@@ -54,6 +63,26 @@ export class ScriptsPage implements OnInit {
   
   Dismiss(){
     this.viewCtrl.dismiss({somedata:'Dismissed'});
+  }
+  loadMore(event) {
+    setTimeout(() => {
+
+      console.log('Done');
+      let newlist = this.scripts.slice(this.start, this.end);
+      if (newlist.length > 0) {
+        this.list=this.list.concat(newlist)
+        this.start = this.end;
+        this.end += this.limit;
+      }
+      event.target.complete();
+
+      if (this.list.length >= this.scripts.length) {
+        event.target.disabled = true;
+      }
+      // App logic to determine if all data is loaded
+      // and disable the infinite scroll
+
+    }, 500);
   }
   // loadData(event) {
   //   setTimeout(() => {

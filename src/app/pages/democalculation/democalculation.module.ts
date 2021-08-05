@@ -7,8 +7,9 @@ import { IonicModule } from '@ionic/angular';
 import { DemocalculationPageRoutingModule } from './democalculation-routing.module';
 
 import { DemocalculationPage } from './democalculation.page';
-import { ScriptcomboboxComponent } from 'src/app/components/scriptcombobox/scriptcombobox.component';
+
 import { CalculationComponent } from 'src/app/components/calculation/calculation.component';
+import { ScriptselectComponent } from 'src/app/components/scriptselect/scriptselect.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { CalculationComponent } from 'src/app/components/calculation/calculation
     IonicModule,
     DemocalculationPageRoutingModule
   ],
-  declarations: [DemocalculationPage,ScriptcomboboxComponent,CalculationComponent]
+  declarations: [DemocalculationPage,ScriptselectComponent,CalculationComponent]
 })
 export class DemocalculationPageModule {}

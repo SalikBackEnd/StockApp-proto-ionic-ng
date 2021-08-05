@@ -43,6 +43,8 @@ export class InventoryPage implements OnInit {
   public scriptList:any=[];
   public Scriptitem:any=[];
 
+ 
+ 
   public limit=3;
   public index=0;
   public isWeb:number=0;
@@ -56,11 +58,13 @@ export class InventoryPage implements OnInit {
 
   public isDownloadAvailable=false;
 
+  public Darkmode:boolean=false;
   // public selectedScriptid:string="";
 
   constructor(public local:LocalService,public toast:ToastService,private loader:LoaderService,public helper:HelperService,public modalcontroller:ModalController,public report:ReportService) { 
     this.scriptList=local.scriptlist;
     this.myPlatform=helper.getPlatForm();
+    this.Darkmode=this.local.isdarkmode;
     if (this.myPlatform == Platforms.Web){
       this.isWeb = Platforms.Web;
     }
@@ -195,6 +199,27 @@ export class InventoryPage implements OnInit {
      this.isDownloadAvailable=false;
     }
     this.isDownloadAvailable=true;
+  }
+  onClick(event){
+    let systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+    systemDark.addListener(this.colorTest);
+    if(event.detail.checked){
+      document.body.setAttribute('data-theme', 'dark');
+      this.local.SetData(Tables.Darkmode,true);
+    }
+    else{
+      document.body.setAttribute('data-theme', 'light');
+      this.local.SetData(Tables.Darkmode,false);
+    }
+  }
+  colorTest(systemInitiatedDark) {
+    if (systemInitiatedDark.matches) {
+      document.body.setAttribute('data-theme', 'dark');
+      this.local.SetData(Tables.Darkmode,true);	
+    } else {
+      document.body.setAttribute('data-theme', 'light');
+      this.local.SetData(Tables.Darkmode,false);
+    }
   }
   // recieveScriptId(id){
   //   this.selectedScriptid=id;

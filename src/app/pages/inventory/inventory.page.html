@@ -10,6 +10,7 @@
       <app-scriptselect (emitid)="recieveScriptId($event)" ></app-scriptselect>
     </ion-col>
   </ion-row> -->
+ 
   <ion-row class="ion-justify-content-center">
     <ion-col size="12" class="self-align-item-center ion-text-center">
       <!-- <ion-button (click)="OpenPnL()">Profit & Loss</ion-button>
@@ -23,8 +24,8 @@
   
     <ion-list>
       <ion-list-header color="primary">
-        <ion-label class="ion-text-center"> <ion-text color="light"><b>Scripts</b></ion-text></ion-label>
-        <ion-label class="ion-text-center"> <ion-text color="light"><b>Qty@</b></ion-text></ion-label>
+        <ion-label class="ion-text-center"> <ion-text ><b>Scripts</b></ion-text></ion-label>
+        <ion-label class="ion-text-center"> <ion-text ><b>Qty@</b></ion-text></ion-label>
       </ion-list-header>
       <ion-item-sliding *ngFor="let i of Scriptitem" (ionSwipe)="OpenScriptDetails(i.script.id,i.script.name)" (click)="OpenScriptDetails(i.script.id,i.script.name)">
         <ion-card color="dark">
@@ -41,7 +42,16 @@
       </ion-item-sliding>
     
     </ion-list>
-
+    <ion-row>
+      <ion-col>
+        <ion-item lines="full">
+          <ion-label>
+            Dark Mode
+          </ion-label>
+          <ion-toggle [(ngModel)]="Darkmode" (ionChange)="onClick($event)" slot="end" color="dark"></ion-toggle>
+        </ion-item>
+      </ion-col>
+    </ion-row> 
   
  
     <!-- <ion-button color="danger" (click)="ResetStorage()" class="ion-padding">Reset Inventory</ion-button> -->

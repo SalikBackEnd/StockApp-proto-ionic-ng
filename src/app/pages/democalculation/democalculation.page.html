@@ -12,7 +12,10 @@
     <ion-grid >
       <ion-row>
         <ion-col justify-content-center class="ion-padding">
-            <app-scriptcombobox [sid]="resetscriptid" (scriptvalue)="receiveScriptid($event)"></app-scriptcombobox>
+            <!-- <app-scriptcombobox [sid]="resetscriptid" (scriptvalue)="receiveScriptid($event)"></app-scriptcombobox> -->
+            <ion-item>
+              <app-scriptselect [reset]="resetscript" (emitid)="receiveScriptid($event)"></app-scriptselect>
+            </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -30,12 +33,11 @@
         </ion-col>
       </ion-row>
       <ion-row class="ion-justify-content-between">
-        <ion-col size="9">
+        <ion-col size="12">
+          <ion-item lines="full">
           <ion-label>Inculde Tax and Commission*</ion-label>
-        </ion-col>
-        <ion-col size="3" >
-          <ion-item>
-            <ion-checkbox [(ngModel)]="Tax" (ngModelChange)="onCheck()"></ion-checkbox>
+       
+            <ion-checkbox slot="end" [(ngModel)]="Tax" (ngModelChange)="onCheck()"></ion-checkbox>
           </ion-item>
         </ion-col>
       </ion-row>

@@ -3,7 +3,8 @@ import { LocalService } from 'src/app/services/local.service';
 import { ToastService } from 'src/app/services/toast.service';
 
 import { TransactionType, HelperService, Tables } from 'src/app/services/helper.service';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
+import { DemoplPage } from 'src/app/modal/demopl/demopl.page';
 
 @Component({
   selector: 'app-sell',
@@ -40,7 +41,7 @@ export class SellPage implements OnInit {
   comission: number=0;
   totalcost: number=0;
   public resetscript:boolean=false;
-  constructor(public local: LocalService, public toast: ToastService, public helper: HelperService, public loadingController: LoadingController) {
+  constructor(public local: LocalService, public toast: ToastService, public helper: HelperService, public loadingController: LoadingController, public viewCtrl:ModalController) {
     // this.addScriptstoSelect();
   }
 
@@ -251,5 +252,9 @@ export class SellPage implements OnInit {
   receiveScriptid(value:string){
     this.selectedScriptid=value;
     this.selectedScript=parseInt(value);
+  }
+  async OpenDemoPL(){
+    const modal=await this.viewCtrl.create({component:DemoplPage});
+    return await modal.present();
   }
 }

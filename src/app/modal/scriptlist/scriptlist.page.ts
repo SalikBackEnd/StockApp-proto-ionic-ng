@@ -49,7 +49,7 @@ export class ScriptlistPage implements OnInit {
     }, 500);
   }
   async Dismiss(){
-    await this.viewCrtl.dismiss();
+    await this.viewCrtl.dismiss({id:"",name:""});
   }
   async onSelect(id,name){
     await this.viewCrtl.dismiss({id:id,name:name});

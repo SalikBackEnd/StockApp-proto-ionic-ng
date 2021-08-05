@@ -43,7 +43,7 @@ export class BuyPage implements OnInit {
 
 public resetscript:boolean=false;
 
-@ViewChild(ScriptcomboboxComponent) Scriptcombox:ScriptcomboboxComponent;
+
   constructor(public local: LocalService,public helper:HelperService, public toast: ToastService, public loadingController: LoadingController,public modalController:ModalController) {
     // this.addScriptstoSelect();
     this.local.PopulateFavScript();
@@ -56,7 +56,7 @@ public resetscript:boolean=false;
   }
   ionViewDidEnter(){
     this.helper.GetFavScripts();
-    this.Scriptcombox.refreshList();
+    
   }
   // addScriptstoSelect() {
   //   this.local.GetScripts().subscribe(res => {
