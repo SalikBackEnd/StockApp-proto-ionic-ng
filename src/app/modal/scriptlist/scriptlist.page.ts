@@ -12,21 +12,29 @@ export class ScriptlistPage implements OnInit {
 
   public List:any=[];
   public Scripts:any=[];
+  public beforeSearchList:any=[];
   public limit=20;
   public start=0;
   public end=this.limit-1;
+ 
   constructor(
     public local:LocalService,
     public helper:HelperService,
     public viewCrtl:ModalController
   ) { 
     this.Scripts=helper.favScriptList;
+    this.PopulateScripts();
+  }
+
+  ngOnInit() {}
+
+  PopulateScripts(){
+   this.start=0;
+   this.end=this.limit-1;
     this.List=this.Scripts.slice(this.start,this.end);
     this.start=this.end;
     this.end+=this.limit;
   }
-
-  ngOnInit() {}
 
   loadMore(event) {
     setTimeout(() => {
@@ -53,5 +61,14 @@ export class ScriptlistPage implements OnInit {
   }
   async onSelect(id,name){
     await this.viewCrtl.dismiss({id:id,name:name});
+  }
+  onSearchChange(value){
+    if(value != ""){
+      let scripts=this.Scripts.filter(x=>x.name.includes(value.toUpperCase()) || x.name.includes(value));
+     
+      this.List=scripts;
+    }else{
+      this.PopulateScripts();
+    }
   }
 }
