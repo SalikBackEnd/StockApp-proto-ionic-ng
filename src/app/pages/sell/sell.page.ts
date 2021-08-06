@@ -30,7 +30,7 @@ export class SellPage implements OnInit {
   public Amount: number = 0;
   public page = 'sell';
   public scripts: any = [];
-  Tax: any = false;
+  Tax: boolean = false;
 
   public selectedScriptid: string="0";
   public selectedScript:number;
@@ -54,6 +54,7 @@ export class SellPage implements OnInit {
   ionViewWillEnter() {
     // this.addScriptstoSelect();
     this.local.countTotalShares();
+    this.Tax=this.local.isTaxInclude;
   }
   // onScriptSelect(value) {
   //   if (value != "") {

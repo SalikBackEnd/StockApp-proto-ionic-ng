@@ -29,7 +29,7 @@ export class BuyPage implements OnInit {
   }
   textQty: string = '';
   textPrice: string='';
-  Tax: any = false;
+  Tax:boolean = false;
   public logList: any = [];
   public logarr = [];
   public selectedscriptid:string="0";
@@ -52,7 +52,7 @@ public resetscript:boolean=false;
   ngOnInit() {
   }
   ionViewWillEnter(){
-   
+   this.Tax=this.local.isTaxInclude;
   }
   ionViewDidEnter(){
     this.helper.GetFavScripts();

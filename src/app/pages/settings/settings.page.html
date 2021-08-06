@@ -12,7 +12,7 @@
           <ion-label>
             Dark Mode
           </ion-label>
-          <ion-toggle [(ngModel)]="Darkmode" (ionChange)="onClickDarkmode($event)" slot="end" color="dark"></ion-toggle>
+          <ion-toggle [(ngModel)]="Darkmode" (ionChange)="onClickDarkmode($event)" slot="end" color="medium"></ion-toggle>
         </ion-item>
       </ion-col>
     </ion-row> 
@@ -22,7 +22,7 @@
           <ion-label>
             Include Tax and Comission
           </ion-label>
-          <ion-toggle [(ngModel)]="IncludeTax" (ionChange)="onClickTax($event)" slot="end" color="dark"></ion-toggle>
+          <ion-toggle [(ngModel)]="isTaxInclude" (ionChange)="onClickTax($event)" slot="end" color="medium"></ion-toggle>
         </ion-item>
       </ion-col>
     </ion-row> 

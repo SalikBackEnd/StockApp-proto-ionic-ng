@@ -18,7 +18,7 @@ export class DemocalculationPage implements OnInit {
   public selectedScript:string="0";
   textQty: string = '';
   textPrice: string = '';
-  Tax: any = false;
+  Tax:boolean = false;
  
   public Quantity: number = 0;
   public Amount: number = 0;
@@ -27,13 +27,17 @@ export class DemocalculationPage implements OnInit {
   public comission=0;
   @ViewChild(ScriptcomboboxComponent) Scriptcombox:ScriptcomboboxComponent;
   @ViewChild(CalculationComponent) Calculations:CalculationComponent;
-  constructor(public local: LocalService,public helper:HelperService, public toast: ToastService,public viewCtrl: ModalController) { }
+  constructor(public local: LocalService,public helper:HelperService, public toast: ToastService,public viewCtrl: ModalController) { 
+    this.Tax=this.local.isTaxInclude;
+  }
 
   ngOnInit() {
   }
+
   ionViewDidEnter(){
     this.helper.GetFavScripts();
     this.Scriptcombox.refreshList();
+   
   }
   receiveTax(value:number){
     this.tax=value;

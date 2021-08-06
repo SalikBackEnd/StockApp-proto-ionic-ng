@@ -46,8 +46,10 @@ export class SettingsPage implements OnInit {
   onClickTax(event){
     if(event.detail.checked){
       this.local.SetData(Tables.TaxnComission,true);
+      this.local.isTaxInclude=true;
     }else{
       this.local.SetData(Tables.TaxnComission,false);
+      this.local.isTaxInclude=false;
     }
   }
 }
