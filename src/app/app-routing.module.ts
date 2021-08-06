@@ -64,6 +64,10 @@ const routes: Routes = [
     path: 'scriptlist',
     loadChildren: () => import('./modal/scriptlist/scriptlist.module').then( m => m.ScriptlistPageModule)
   },
+  {
+    path: 'settings',
+    loadChildren: () => import('./modal/settings/settings.module').then( m => m.SettingsPageModule)
+  },
 ];
 
 @NgModule({
