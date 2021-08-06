@@ -39,6 +39,15 @@ const routes: Routes = [
              import('../inventory/inventory.module').then(m=>m.InventoryPageModule)
           }
         ]
+      },{
+        path:'settings',
+        children:[
+          {
+            path:'',
+            loadChildren: () =>
+             import('../../modal/settings/settings.module').then(m=>m.SettingsPageModule)
+          }
+        ]
       },
       {
         path:'',

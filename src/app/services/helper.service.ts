@@ -23,7 +23,8 @@ export enum Tables {
   Transaction = "trnsctlog",
   FavScripts="favScripts",
   Payout="payouts",
-  Darkmode="dark-mode"
+  Darkmode="dark-mode",
+  TaxnComission="taxncomission"
 }
 export enum PnL {
   Profit = 1,

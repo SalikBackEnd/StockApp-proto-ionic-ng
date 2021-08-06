@@ -200,27 +200,27 @@ export class InventoryPage implements OnInit {
     }
     this.isDownloadAvailable=true;
   }
-  onClick(event){
-    let systemDark = window.matchMedia("(prefers-color-scheme: dark)");
-    systemDark.addListener(this.colorTest);
-    if(event.detail.checked){
-      document.body.setAttribute('data-theme', 'dark');
-      this.local.SetData(Tables.Darkmode,true);
-    }
-    else{
-      document.body.setAttribute('data-theme', 'light');
-      this.local.SetData(Tables.Darkmode,false);
-    }
-  }
-  colorTest(systemInitiatedDark) {
-    if (systemInitiatedDark.matches) {
-      document.body.setAttribute('data-theme', 'dark');
-      this.local.SetData(Tables.Darkmode,true);	
-    } else {
-      document.body.setAttribute('data-theme', 'light');
-      this.local.SetData(Tables.Darkmode,false);
-    }
-  }
+  // onClick(event){
+  //   let systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+  //   systemDark.addListener(this.colorTest);
+  //   if(event.detail.checked){
+  //     document.body.setAttribute('data-theme', 'dark');
+  //     this.local.SetData(Tables.Darkmode,true);
+  //   }
+  //   else{
+  //     document.body.setAttribute('data-theme', 'light');
+  //     this.local.SetData(Tables.Darkmode,false);
+  //   }
+  // }
+  // colorTest(systemInitiatedDark) {
+  //   if (systemInitiatedDark.matches) {
+  //     document.body.setAttribute('data-theme', 'dark');
+      
+  //   } else {
+  //     document.body.setAttribute('data-theme', 'light');
+     
+  //   }
+  // }
   // recieveScriptId(id){
   //   this.selectedScriptid=id;
   //   console.log("Receive id="+id);

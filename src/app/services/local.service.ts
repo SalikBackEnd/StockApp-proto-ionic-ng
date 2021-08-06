@@ -18,13 +18,15 @@ export class LocalService {
   
   public objfavscripts:any={
     id:"",name:"",fav:false
-    };
+  };
   
-    public isdarkmode:boolean=false;
+  public isdarkmode:boolean=false;
+  public isTaxInclude:boolean=false;
+
   constructor(public http: HttpClient) { 
     this.GetScriptsList();
-   this.isDarkMode();
-    
+    this.isDarkMode();
+    this.isIncludeTax()
   }
 
   
@@ -211,7 +213,12 @@ export class LocalService {
         document.body.setAttribute('data-theme', 'dark');
       }
     }
-    
+  }
+  isIncludeTax(){
+    let taxnc=this.GetData(Tables.TaxnComission);
+    if(taxnc != undefined || taxnc != null){
+      this.isTaxInclude=taxnc;
+    }
   }
   
 }
