@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SafeUrl } from '@angular/platform-browser';
+
 import { ModalController } from '@ionic/angular';
-import { ScriptselectComponent } from 'src/app/components/scriptselect/scriptselect.component';
+
 import { ViewscriptPage } from 'src/app/modal/viewscript/viewscript.page';
 import { HelperService, Platforms, Tables } from 'src/app/services/helper.service';
 import { LoaderService } from 'src/app/services/loader.service';
@@ -13,7 +13,9 @@ import { LogsPage } from '../logs/logs.page';
 import { PayoutPage } from '../payout/payout.page';
 import { PnlPage } from '../pnl/pnl.page';
 import { ScriptsPage } from '../scripts/scripts.page';
-
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { ThrowStmt } from '@angular/compiler';
+import { async } from 'rxjs';
 
 @Component({
   selector: 'app-inventory',
@@ -60,8 +62,17 @@ export class InventoryPage implements OnInit {
 
   public Darkmode:boolean=false;
   // public selectedScriptid:string="";
+  
 
-  constructor(public local:LocalService,public toast:ToastService,private loader:LoaderService,public helper:HelperService,public modalcontroller:ModalController,public report:ReportService) { 
+  constructor(
+    public local:LocalService,
+    public toast:ToastService,
+    private loader:LoaderService,
+    public helper:HelperService,
+    public modalcontroller:ModalController,
+    public report:ReportService,
+    public notification:LocalNotifications
+    ) { 
     this.scriptList=local.scriptlist;
     this.myPlatform=helper.getPlatForm();
     this.Darkmode=this.local.isdarkmode;
@@ -160,15 +171,29 @@ export class InventoryPage implements OnInit {
       if (this.myPlatform == Platforms.Mobile) {
         await this.report.writeJSON("Report_" + this.timestamp + ".json", this.reportObject).then(
           async res=>{
-            console.log(res);
+            this.report.reportCallBackObj=res[0];
+            console.log(this.report.reportCallBackObj);
             //this.toast.show("Report generated in local storage under 'StockfolioReports' directory.");
-            await this.loader.dismiss(loader).then(res=>{
-              this.toast.show("Report generated in local storage under 'StockfolioReports' directory.");
+           
+            await this.loader.dismiss(loader).then(async result=>{
+             this.notification.schedule({
+                id: 1,
+                text: 'Location: '+this.report.reportCallBackObj.path,
+                sound: true ? 'file://sound.mp3' : 'file://beep.caf',
+                title:"Report Created"
+                
+              });
             });
           },
-          err=>{
+         async err=>{
             console.log(err);
             this.toast.show("Error occur while generating report!")  
+            await this.notification.schedule({
+              id: 1,
+              text: 'Error occur while generating report!',
+              sound: true? 'file://sound.mp3': 'file://beep.caf',
+              data: { secret: "a" }
+            });
           }
           );
       }

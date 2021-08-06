@@ -29,6 +29,12 @@ export class ReportService {
     sellprice: 0,
     state: 0
   }
+  public reportCallBackObj={
+    msg:"",
+    path:"",
+    error:false
+  }
+
   constructor(
     private File:File,
     private platform:Platform,
@@ -59,7 +65,7 @@ export class ReportService {
   return created;
   }
   async writeJSON(filename,object){
-    return new Promise<string>(async (resolve,rejected)=>{
+    return new Promise<object>(async (resolve,rejected)=>{
       console.log(this.platform.platforms());
       if(this.currentPlatform.includes('hybrid'))
        await this.writeJSONAndroid(filename,object).then(
@@ -71,7 +77,7 @@ export class ReportService {
   
   }
   async writeJSONAndroid(filename, object) {
-    return new Promise<string>(async (resolve,rejected)=>{
+    return new Promise<object>(async (resolve,rejected)=>{
       object = JSON.stringify(object);
     // let datadirectory=this.File.dataDirectory;
     let directoryname = "StockfolioReports";
@@ -81,19 +87,39 @@ export class ReportService {
       await this.File.createFile(extrootdirectory + directoryname, filename, true).then(
         async (v) => {
          await this.File.writeFile(extrootdirectory + directoryname, filename, object, { append: true }).then(s => {
-            resolve("File Written at '"+extrootdirectory + directoryname+"'");
+           this.reportCallBackObj={
+             msg:"File Written at '"+extrootdirectory + directoryname+"'",
+             path:extrootdirectory+directoryname+"/"+filename,
+             error:false
+           }
+            resolve([this.reportCallBackObj]);
           }, err => {
-            rejected("Error: Report can't be written.");
+            this.reportCallBackObj={
+              msg:"Error: Report can't be written.",
+              path:undefined,
+              error:true
+            }
+            rejected([this.reportCallBackObj]);
           }).catch(async err => {
             await this.File.writeFile(extrootdirectory + directoryname, filename, object).then(s => {
-              resolve("File Written at '"+extrootdirectory + directoryname+"'");
+              this.reportCallBackObj={
+                msg:"File Written at '"+extrootdirectory + directoryname+"'",
+                path:extrootdirectory+directoryname+"/"+filename,
+                error:false
+              }
+               resolve([this.reportCallBackObj]);
             });
           });
         },
         err => {
           console.log("createFile Error")
           console.log(err)
-          rejected("Error: Report can't be generated.");
+          this.reportCallBackObj={
+            msg:"Error: Report can't be written.",
+            path:undefined,
+            error:true
+          }
+          rejected([this.reportCallBackObj]);
         });
     }
     });

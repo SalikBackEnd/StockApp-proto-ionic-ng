@@ -14,6 +14,7 @@ import { File } from '@ionic-native/file/ngx';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { StartupService } from './services/startup.service';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 // import { ScriptcomboboxComponent } from './components/scriptcombobox/scriptcombobox.component';
 
 
@@ -21,7 +22,15 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
   declarations: [AppComponent],
   entryComponents: [],
   imports: [HttpClientModule,BrowserModule, IonicModule.forRoot(), AppRoutingModule,ViewscriptPageModule],
-  providers: [HttpClientModule,StartupService,AndroidPermissions,LocalService,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },ReportService,File,FileChooser,],
+  providers: [
+    HttpClientModule,
+    StartupService,
+    AndroidPermissions,
+    LocalService,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    ,ReportService,
+    File,
+    FileChooser,LocalNotifications],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
